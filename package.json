@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0",
+  "module":"true",
+  "scripts": {
+    "test": "vitest",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview" 
+  },
+  "dependencies": {
+    "react": "latest",
+    "mobx":"latest",
+    "mobx-react-lite":"latest",
+    "firebase":"latest",
+    "vue":"latest",
+    "react-dom":"latest",
+    "react-router-dom": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "vitest": "latest",
+    "@babel/core": "latest",
+    "babel-plugin-module-resolver": "latest",
+    "react-test-renderer": "latest",
+    "@testing-library/vue": "latest",
+    "@testing-library/react": "latest",
+    "@testing-library/jest-dom": "latest",
+    "vite-plugin-virtual-html": "latest",
+    "@vitejs/plugin-vue": "latest",
+    "@iprog/test":"latest",
+    "happy-dom":"latest"
+  },
+  "private": true
+}
