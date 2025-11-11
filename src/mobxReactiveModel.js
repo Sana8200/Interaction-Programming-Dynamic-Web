@@ -2,8 +2,11 @@ import "/src/teacherFetch.js"; // protection against fetch() in infinite loops
 import { observable, configure } from "mobx";
 configure({ enforceActions: "never", });  // we don't use Mobx actions in the Lab
 
-export const reactiveModel="make a reactive object out of the model exported from DinnerModel";
 
+import { model } from "/src/DinnerModel.js";    // Import the javascript model 
+
+export const reactiveModel = observable(model);    // reactive model setup
+// reactive model setup uses observable from mobx to export the model (application state) to the app 
 
 
 
