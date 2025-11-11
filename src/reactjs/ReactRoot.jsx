@@ -1,4 +1,4 @@
-import { Summary } from "./summaryPresenter.jsx";
+import { Summary } from "./summaryPresenter.jsx";    // for rendering the SummaryView
 
 // const ReactRoot = observer(   //  will be added in week 3
 function ReactRoot(props){
