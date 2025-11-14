@@ -10,8 +10,6 @@ export const reactiveModel = observable(model);    // reactive model setup
 
 
 
-
-
 // ------ for Lab debug purposes ----------
 // making the reactive model available at the browser JavasScript Console
 window.myModel= reactiveModel;
@@ -21,3 +19,12 @@ import {dishesConst} from "/src/dishesConst.js";
 window.dishesConst= dishesConst;
 
 //myModel.addToMenu(dishesConst[2]); //You can test with more/different dishes
+// Bootstrapping, setting up the inital state (index.js)
+myModel.addToMenu(dishesConst[0]);
+myModel.addToMenu(dishesConst[1]);
+myModel.addToMenu(dishesConst[2]);
+myModel.addToMenu(dishesConst[3]);
+myModel.addToMenu(dishesConst[4]);
+myModel.addToMenu(dishesConst[5]);
+myModel.addToMenu(dishesConst[6]);
+myModel.addToMenu(dishesConst[7]);
