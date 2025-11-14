@@ -38,4 +38,3 @@ export const model = {
  
     // more methods will be added here, don't forget to separate them with comma!
 };
-
