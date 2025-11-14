@@ -1,4 +1,6 @@
 // example dishes, do not use in lab code!
+// amount: base amount of a single ingredient for one serving 
+// id, the unique id that we use as key 
 export const dishesConst = [{
     id: 1,
     title: 'French toast',
