@@ -1,9 +1,20 @@
 import { Summary } from "./summaryPresenter.jsx";    // for rendering the SummaryView
+import { Sidebar } from "./sidebarPresenter.jsx";    // for rendering the SidebarView
 
-// const ReactRoot = observer(   //  will be added in week 3
+
+
+// const ReactRoot = observer(   
 function ReactRoot(props){
-    return (<div>
-                <div><Summary model={props.model} /></div>
+    return (
+            <div>    
+                <div>
+                    {/* Sidebar above Summary*/}
+                    <Sidebar model = {props.model} />.    
+                </div>
+
+                <div>
+                    <Summary model={props.model} />
+                </div>
             </div>
            );
 }
