@@ -1,5 +1,40 @@
-
+# Dependencies
 node_modules/
-.vite/
-.DS_Store
+
+# Emacs backup
+*~
+
+# Expo
+.expo/
 dist/
+web-build/
+
+# React Native
+ios/
+android/
+
+# Native build artifacts
+*.orig
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# Debug logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# Local environment files
+.env*.local
+
+# TypeScript
+*.tsbuildinfo
