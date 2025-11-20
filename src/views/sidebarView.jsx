@@ -3,7 +3,8 @@ import "/src/style.css"
 
 
 export function SidebarView(props){
-
+    // props: number, dishes, onNumberChange, onSelectedDish, onSelectedRemoveDish
+    
     // Event handler for - button 
     function handleMinusACB(){
         console.log("Decreasing the number of guests:", props.number - 1);
@@ -17,7 +18,7 @@ export function SidebarView(props){
     }
 
     return (
-        <div>
+        <div className="sidebar-box">
             {/* minus button disables when the number is excatly equals to 1 */}
             <button 
                 disabled={props.number === 1}
@@ -33,14 +34,14 @@ export function SidebarView(props){
             </button>    
             
             {/* Dish table */}
-            <table>
+            <table >
                 <tbody>
                     {   // mapping dish array to table rows after sorting 
                         sortDishes(props.dishes)?.map(dishTableRowCB)
                     }
                     <tr>
                         <td></td>
-                        <td>Total:</td>
+                        <td >Total:</td>
                         <td></td>
                         <td className="align-right">
                             {/* Total price, scaled by guest count */}

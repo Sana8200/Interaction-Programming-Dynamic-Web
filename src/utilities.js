@@ -1,6 +1,5 @@
 /* uncomment the export below to enable the 1.1.2 test suite! */
 export function compareIngredientsCB(ingredientA, ingredientB){
-
     // Compare by aisle
     if(ingredientA.aisle < ingredientB.aisle){
         return -1;     // return negative value if order is correct 
@@ -19,8 +18,7 @@ export function compareIngredientsCB(ingredientA, ingredientB){
     return 0;     // return 0 if parameters are equal 
 }
 
-export function sortIngredients(ingredients){
-    
+export function sortIngredients(ingredients){ 
     const ingredientCopy = [...ingredients];     // creating a clone (copy) of the array, sorted array should not be the same object as original array 
     ingredientCopy.sort(compareIngredientsCB);    // sorting the clone array and passing compareIngredinctsCB as callback, sort(someCB)
 
@@ -36,8 +34,7 @@ export function isKnownTypeCB(type){
     }
 }
 
-export function dishType(dish){     // use filter(CB) / find(CB)  to check the given dish has any of the known types 
-    
+export function dishType(dish){     // use filter(CB) / find(CB)  to check the given dish has any of the known types  
     if(!dish.dishTypes){    // No dishtye property, return empty string 
         return "";     
     } 
@@ -54,7 +51,6 @@ export function dishType(dish){     // use filter(CB) / find(CB)  to check the g
 
 
 export function compareDishesCB(dishA, dishB){
-
     const typeOrder = {   // Creating a map to give each type a numberic value 
         "" : 0,   // No type comes first 
         "starter" :  1,
@@ -75,7 +71,6 @@ export function compareDishesCB(dishA, dishB){
 
 
 export function sortDishes(dishes){
-
     const dishesCopy = [...dishes];    // clone of the array 
 
     dishesCopy.sort(compareDishesCB);    // Sort the clone of the array using compareDishesCB callback 
@@ -85,13 +80,12 @@ export function sortDishes(dishes){
 
 
 export function menuPrice(dishesArray){
-
-    function CB(accumulator, dish) {    // Callback made
-        debugger;
+    function calTotalPriceCB(accumulator, dish) {    // Callback made
+        // debugger;
         return accumulator + dish.pricePerServing     
     }
 
-    const totalPrice = dishesArray.reduce(CB, 0);    // call reduce with the callback fist parameter and 0 as second parameter (computing the total starting from zero)
+    const totalPrice = dishesArray.reduce(calTotalPriceCB, 0);    // call reduce with the callback fist parameter and 0 as second parameter (computing the total starting from zero)
 
     return totalPrice;
 }
