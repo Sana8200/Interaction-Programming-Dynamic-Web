@@ -3,7 +3,146 @@
     border-style:solid;
 }
 
-
+/* align text to the right */
 .align-right {
     text-align: right;
+}
+
+
+/* Some properties optional can be removed or chagned */
+
+/* The container holds all the dish search results */
+.search-results-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 5px;     
+}
+
+
+/* Each individual search result */
+.search-result {
+    display: inline-block;
+    width: 150px;          
+    margin: 10px;     
+    text-align: center;   
+    vertical-align: top;
+    /* cursor changes the mouse pointer shape so the user knows the dish is clickable */   
+    cursor: pointer;      
+}
+
+/* Image styling within each search result */
+.search-result img {
+    max-width: 100%;
+    object-fit: cover;
+}
+
+/* For spaces between boxes */
+.search-boxes {
+    display: flex;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    gap: 10px;  
+}
+
+
+
+/* Main container for the details view */
+.details-view {
+    border: 1px solid black;
+    padding: 40px;
+    margin: 20px;
+    background-color: white;
+    max-width: 1000px; /* Keeps it readable on wide screens */
+}
+
+/* Header area with title and image */
+.details-header {
+    margin-bottom: 10px;
+}
+
+.details-header h2 {
+    margin-top: 2px;
+}
+
+.details-header img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Top Section Layout: Image left, Price right */
+.top-section {
+    display: flex;
+    gap: 20px;
+}
+
+/* Price information section */
+.details-price {
+    background-color: #f2f3eb;
+    margin-bottom: 50px;
+    font-weight: bold;
+    color: #000100;
+    width: 200px;
+    max-width: 400px;
+    
+}
+
+/* Container for the list of ingredients */
+.ingredients-details {
+    background-color: #d8dcc3;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 500px;
+    max-width: auto;
+}
+
+/* Individual ingredient row */
+.ingredient {
+    padding: 5px 0;
+    border-bottom: 1px solid #c2c4b5;
+}
+
+/* Remove border from the last ingredient for a cleaner look */
+.ingredient:last-child {
+    border-bottom: none;
+}
+
+/* Cooking instructions section */
+.details-instructions {
+    background-color: #f2f3eb;
+    margin-bottom: 20px;
+    line-height: 1.5; /* Improves readability of long text */
+}
+
+/* Button container */
+.button-details {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.button-details button {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+/* Style specifically for disabled buttons */
+.button-details button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.bordered-box {
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 6px;
+}
+
+.sidebar-box {
+    border: 1px solid #ccc;
+    padding: 12px;
+    max-width: auto;
 }

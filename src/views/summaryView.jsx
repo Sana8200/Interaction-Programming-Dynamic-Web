@@ -3,6 +3,8 @@ import "/src/style.css"
 
 /* Functional JSX component. Name must start with capital letter */
 export function SummaryView(props){    
+  // props used: people, ingredients
+  
     return (
             <div className="debug">
 
@@ -49,3 +51,4 @@ export function SummaryView(props){
                </tr>;
     }
 }
+
