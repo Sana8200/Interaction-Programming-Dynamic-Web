@@ -2,9 +2,7 @@ import "/src/teacherFetch.js"; // protection against fetch() in infinite loops
 import { reaction, observable, configure } from "mobx";
 import {dishesConst} from "/src/dishesConst.js";
 import { model } from "/src/DinnerModel.js";    // Import the javascript model 
-
 import { connectToPersistence } from "./firestoreModel";
-
 
 configure({ enforceActions: "never", });  // we don't use Mobx actions in the Lab
 
@@ -32,14 +30,11 @@ function currentDishSideEffectACB(){
 // wathcer reaction for watching changes in currentDishId and triggering side effect    
 reaction(currentDishIDACB, currentDishSideEffectACB);
 
-
 // runs the firestore initialization (connecting persistence), Connecting to persistence. 
 // We pass the model and the reaction funciton , allowing firestoreModel to observe changes without importing Mobs directly
 // Passing the side effect watcher ensures that our firestoreModel does not depend on your reactive object technology.
 connectToPersistence(reactiveModel, reaction);
 
-
-
-
+// Inittial Search 
 myModel.doSearch({});
 
