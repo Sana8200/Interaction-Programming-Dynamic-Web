@@ -2,16 +2,24 @@ import { Summary } from "./summaryPresenter.jsx";    // for rendering the Summar
 import { Sidebar } from "./sidebarPresenter.jsx";    // for rendering the SidebarView
 import { Search } from "./searchPresenter.jsx";    // for rendering the SearchView
 import { Details } from "./detailsPresenter.jsx";    // for rendering the DetailsView
-// import { observer } from "mobx-react-lite";   // will be added in week 3
+import { SuspenseView } from "../views/suspenseView.jsx";
+import { observer } from "mobx-react-lite";
 
 
-// const ReactRoot = observer(   //  will be added in week 3
-function ReactRoot(props){
-    return (
-            <div>    
+const ReactRoot = observer(
+    function ReactRoot(props) {
+        if(!props.model.ready){
+            return(
+                <div>
+                    <SuspenseView promise = {true}/>
+                </div>
+            )
+        }
+        return (
+            <div>
                 <div>
                     {/* Sidebar above Summary*/}
-                    <Sidebar model = {props.model} />    
+                    <Sidebar model={props.model} />
                 </div>
 
                 <div>
@@ -20,8 +28,8 @@ function ReactRoot(props){
                     <Summary model={props.model} />
                 </div>
             </div>
-           );
-}
-// )
+        );
+    }
+);
 
 export { ReactRoot }

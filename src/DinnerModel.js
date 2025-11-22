@@ -10,7 +10,7 @@ export const model = {
     numberOfGuests: 2,
     dishes: [],
     currentDishId: null,  // null means "intentionally empty"
-
+    
     // defining searchParam and searchResultPromiseState model property (value an empty object)
     searchParams: {},
     searchResultsPromiseState:{},
