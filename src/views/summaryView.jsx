@@ -6,15 +6,14 @@ export function SummaryView(props){
   // props used: people, ingredients
   
     return (
-            <div className="debug">
+            <div className="summary-view">
 
               {/* TW 1.2 note the syntax: {JS_expression_or_comment} */}
               {/* DOM tree JSX code, Rendering the number of people */}
-              Summary for <span title="nr guests">{props.people}</span> 
-              
+              Summary for <span title="nr guests">{props.people}</span>  
               {/* Conditional Expression .? logic */}
               {props.people === 1 ? " person" : " persons"}:      
-          
+
               <table>
                 <thead>
                   <tr>
