@@ -34,6 +34,8 @@ export function connectToPersistence(model, watchFunction) {
         if (!model.ready) {
             return;
         }
+
+        
         const dataToSave = {
             numberOfGuests: model.numberOfGuests,
             dishes: model.dishes,
@@ -80,4 +82,5 @@ I implemented this way because it was like this in the lecture video. The way I 
 however, I didn't pass the unit test related to this part at all, even though i tried many different ways. finallly i decided to just go in an easy and simple 
 way which worked. But I just got tired and got confused because this simple thing took me one and half day, I issued a problem and waited for half a day, but got no answer, then
 I just implemented the simple way. It's fixed now, but I'm not sure still that are we supposed to save just dish id to the cloud, or the whole dish details works as well?
+But generally I couldn't pass the unit tests by saving just dish Ids and reading back and calling gerMenu detals, the web was working excatly how it should but I couldn't pass the unit tests. 
 */
