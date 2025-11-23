@@ -1,8 +1,4 @@
 
-
-// promise state 
-/* Promise only executes only when it's truthy, if promise is null or underfined promise state should still be set 
-   (reset in this case) but promise shouldn't be executed. */
 export function resolvePromise(prms, promiseState){
      
     // Setting the promise state to the given promise (prms), and resetting data and error to null

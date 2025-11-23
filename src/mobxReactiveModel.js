@@ -10,8 +10,7 @@ configure({ enforceActions: "never", });  // we don't use Mobx actions in the La
 export const reactiveModel = observable(model);   
 
 
-// ------ for Lab debug purposes ----------
-// making the reactive model available at the browser JavasScript Console
+// for debug-making the reactive model available at the browser JavasScript Console
 window.myModel= reactiveModel;
 window.dishesConst= dishesConst;
 
@@ -29,11 +28,11 @@ reaction(currentDishIDACB, currentDishSideEffectACB);
 
 
 
-// Connecting to Persistence. Passing the side effect watcher ensures that our firestoreModel does not depend on your reactive object technology.
+// Connecting to Persistence.
 connectToPersistence(reactiveModel, reaction);
 
 
-
+/*
 // Inittial Search 
 myModel.doSearch({});
-
+*/

@@ -1,12 +1,11 @@
-import { Summary } from "./summaryPresenter.jsx";    // for rendering the SummaryView
-import { Sidebar } from "./sidebarPresenter.jsx";    // for rendering the SidebarView
-import { Search } from "./searchPresenter.jsx";    // for rendering the SearchView
-import { Details } from "./detailsPresenter.jsx";    // for rendering the DetailsView
-import { SuspenseView } from "../views/suspenseView.jsx";  // for rendering the SuspenseView
+import { Summary } from "./summaryPresenter.jsx";
+import { Sidebar } from "./sidebarPresenter.jsx";
+import { Search } from "./searchPresenter.jsx";
+import { Details } from "./detailsPresenter.jsx";
+import { SuspenseView } from "../views/suspenseView.jsx";
 import { observer } from "mobx-react-lite";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import "/src/style.css"
-
 
 
 function makeRouter(model) {
@@ -38,12 +37,11 @@ const ReactRoot = observer(
             return (
                 <div className="flexParent">
                     <div className="mainContent">
-                        <SuspenseView promise={true} /> {/* Dummy promise for loading state */}
+                        <SuspenseView promise={true} />
                     </div>
                 </div>
             );
         }
-
         // rendering the main part. sidebar goes to a different div, rest goes in mainContent
         return (
             <div className="flexParent">
