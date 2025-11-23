@@ -22,6 +22,7 @@ export function DetailsView(props) {
         props.onAddToMenu();
     };
 
+
     return (
         <div className="details-view">
 
@@ -29,9 +30,9 @@ export function DetailsView(props) {
             <div className="button-details">
                 {/* if the dish is already in the menu, the add to menu button disabled, otherwise add to menu */}
                 <button disabled={props.isDishInMenu} onClick={handleAddToMenuACB}>
-                    Add to menu!
+                    Add to menu
                 </button>
-                <button>
+                <button onClick={() => window.location.hash = "#/search"}>
                     Cancel
                 </button>
             </div>
@@ -50,10 +51,10 @@ export function DetailsView(props) {
                 {/* Dish prise shown for one person, but also for all guests, ingredients quantities shown per person 
                  // (use a different prop name for this same value in detailsView, sidebarView, summeryView to illustrate that views are independent of each other) */}
                 <div className="details-price bordered-box">
-                    <p>Price: {dish.pricePerServing.toFixed(2)} per serving</p>
                     <p>
-                        Total for {props.guests} guests: 
-                        {(dish.pricePerServing * props.guests).toFixed(2)}
+                        Price: {dish.pricePerServing.toFixed(2)} SEK per serving</p>
+                    <p>
+                        Total for {props.guests} guests:  {(dish.pricePerServing * props.guests).toFixed(2)} SEK
                     </p>
                 </div>
             </div>

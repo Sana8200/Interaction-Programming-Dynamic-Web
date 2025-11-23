@@ -2,17 +2,17 @@ import { dishType, menuPrice, sortDishes } from "/src/utilities.js";
 import "/src/style.css"
 
 
-export function SidebarView(props){
+export function SidebarView(props) {
     // props: number, dishes, onNumberChange, onSelectedDish, onSelectedRemoveDish
-    
+
     // Event handler for - button 
-    function handleMinusACB(){
+    function handleMinusACB() {
         console.log("Decreasing the number of guests:", props.number - 1);
         props.onNumberChange(props.number - 1);
     }
 
     // Event handler for + button 
-    function handlePlusACB(){
+    function handlePlusACB() {
         console.log("Increasing the number of guests:", props.number + 1);
         props.onNumberChange(props.number + 1);
     }
@@ -20,19 +20,19 @@ export function SidebarView(props){
     return (
         <div className="sidebar-box">
             {/* minus button disables when the number is excatly equals to 1 */}
-            <button 
+            <button
                 disabled={props.number === 1}
                 onClick={handleMinusACB}>
                 -
-            </button> 
+            </button>
 
-            {props.number}   
+            {props.number}
 
             <button
                 onClick={handlePlusACB}>
                 +
-            </button>    
-            
+            </button>
+
             {/* Dish table */}
             <table >
                 <tbody>
@@ -45,7 +45,7 @@ export function SidebarView(props){
                         <td></td>
                         <td className="align-right">
                             {/* Total price, scaled by guest count */}
-                            {(menuPrice(props.dishes) * props.number).toFixed(2)}  
+                            {(menuPrice(props.dishes) * props.number).toFixed(2)} SEK
                         </td>
                     </tr>
                 </tbody>
@@ -56,17 +56,15 @@ export function SidebarView(props){
 
     /* Array Rendering Callback */
     // A template for each dish row 
-    function dishTableRowCB(dish){
-        
+    function dishTableRowCB(dish) {
+
         // Nested handler for dish link click
-        function handleDishLinkACB(){
-            console.log("Customer selected Dish:", dish.title);
+        function handleDishLinkACB() {
             props.onSelectedDish(dish);
         }
 
         // Nested handler for X button click 
-        function handleRemoveDishACB(){
-            console.log("Customer selected Dish to Remove:", dish.title);
+        function handleRemoveDishACB() {
             props.onSelectedRemoveDish(dish);
         }
 
@@ -78,21 +76,21 @@ export function SidebarView(props){
                     {/* X button for deleting a dish */}
                     <button onClick={handleRemoveDishACB}>
                         X
-                    </button>      
+                    </button>
                 </td>
                 <td>
                     {/* dish name as a hyperlink using # as href, hyperlink destination for single page application */}
                     {/* fire a custom event, the parameter is dish as object */}
-                    <a href="#" onClick={handleDishLinkACB}>
+                    <a href="#/details" onClick={handleDishLinkACB}>
                         {dish.title}
-                    </a>      
+                    </a>
                 </td>
                 <td>
-                    {dishType(dish)}    
+                    {dishType(dish)}
                 </td>
                 <td className="align-right">
                     {/* Price per dish, scaled by guest count */}
-                    {(dish.pricePerServing * props.number).toFixed(2)}       
+                    {(dish.pricePerServing * props.number).toFixed(2)} SEK
                 </td>
             </tr>
         );
