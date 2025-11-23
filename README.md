@@ -1,63 +1,60 @@
-# Interaction programming tutorial
-tutorial version 6
+# 🍽️ Dinner Planner
 
-1. Install Node.js version 22 or 23 using nvm (Node Version Manager)
+A responsive web application for browsing recipes, planning dinner menus, and generating automated shopping lists. Built as part of the **DH2642 Interaction Programming** course at KTH.
 
-If you don't have nvm installed, install it first by following the instructions at: https://www.nvmnode.com/guide/download.html
+## 🚀 Features
 
-Then start a new terminal window.
+* **Recipe Search:** Browse a vast database of recipes using the Spoonacular API.
+* **Menu Planning:** Add dishes to your personal menu (Starter, Main Course, Dessert).
+* **Smart Shopping List:** Automatically aggregates ingredients from all selected dishes.
+* **Dynamic Sidebar:** Real-time updates of total price and guest count.
+* **Cloud Persistence:** Menu state is saved automatically to Firebase Firestore.
+* **Responsive Design:** Fully optimized for Mobile, Tablet, and Desktop.
 
-Install and use Node.js version 22 (Node.js 23 works as well):
-```
-nvm install 22
-nvm use 22
-```
+## 🛠️ Tech Stack
 
-2. After checkout execute
-```
-npm install
-```
+* **Frontend:** React 19 (Functional Components + Hooks)
+* **State Management:** MobX (Reactive Model)
+* **Build Tool:** Vite
+* **Routing:** React Router DOM
+* **Backend/Persistence:** Firebase (Firestore)
+* **API:** Spoonacular Recipe API
 
+## ⚙️ Setup & Installation
 
-3. Run the Unit Tests" which check your lab code:
-```
-npm run test
-```
-Press P to focus on tests with certain name patterns. You can also indicate a pattern in the command line:
-```
-npm run test tw1
-```
-You can also use a "vitest plugin" in Visual Studio Code to see test status in a graphical user interface rather than command line.
+1.  **Clone the repository**
+    ```bash
+    git clone <your-repo-url>
+    cd <your-project-folder>
+    ```
 
-/!\ Changing code may break earlier tests. Make sure to often run all tests!
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-4. To test your app User Interface, start your development server:
-```
-npm run dev
-```
+3.  **Run locally**
+    ```bash
+    npm run dev
+    ```
+    Open `http://localhost:8080` in your browser.
 
-5. Make sure that your function names and parameter names follow the **obligatory** [lab coding conventions](https://docs.google.com/presentation/d/1CtxiAG9mJ6kslSl6psBBlVDafFD4b2Rh2G7ft1GQ08o/edit#slide=id.g17644a78da5_0_174)
+4.  **Run Unit Tests**
+    ```bash
+    npm run test
+    ```
 
-6. To update to the most recent Unit Tests:
-```
-npm update @iprog/test
-```
+## 📂 Project Structure
 
-## Installation problems?
-File [an issue](https://gits-15.sys.kth.se/iprog/issues).
-In case you have problems with the node.js compatibility on your OS you can use Docker to make a clean little "machine"
+* `src/DinnerModel.js` - Core business logic and application state.
+* `src/mobxReactiveModel.js` - MobX wrapper to make the model reactive.
+* `src/views/` - UI components (Search, Details, Sidebar, etc.).
+* `src/reactjs/` - React-specific presenters and router configuration.
+* `src/firestoreModel.js` - Database integration logic.
 
-* Docker: https://docs.docker.com/get-docker/
-* Docker-Compose: https://docs.docker.com/compose/install/
+## 📝 License
 
-Start the machine like so:
-```
-docker-compose up
-```
-(see the file `docker-compose.yml`) 
-
-Running this command for the first time might take some time.
-
+This project is for educational purposes. Recipe data provided by Spoonacular.
 
 
 
