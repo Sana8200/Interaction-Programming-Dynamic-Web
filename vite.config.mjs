@@ -7,10 +7,10 @@ import vuePlugin from '@vitejs/plugin-vue';
 import  {getAliases} from "./node_modules/@iprog/test/test/aliases"
 
 const pages= {
-    "":{
-        entry:'/src/teacherFetch.js',
-        title:"Choose framework", 
-        body: 'Choose web framework: <a href="vue.html">Vue</a>,  <a href="react.html">React</a>'
+    "index":{  
+        entry: '/src/reactjs/index.jsx',  
+        title:"DinnerPlanner React", 
+        body: '<div id="root"></div>'
     },
     "vue":{
         entry: '/src/vuejs/index.jsx',
