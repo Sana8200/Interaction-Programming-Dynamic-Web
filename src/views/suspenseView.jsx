@@ -20,10 +20,7 @@ export function SuspenseView(props) {
         );
     }
 
-    // "No Data" State (Promise resolved but no results found)
-    if(props.promise && props.data === null){
-         return <span>no data!</span>
-    }
+    
 
     // If there is no promise (Initial state), show a nice Welcome message!
     if(!props.promise){
@@ -54,6 +51,11 @@ export function SuspenseView(props) {
                 </div>
             </div>
         );
+    }
+
+    // "No Data" State (Promise resolved but no results found)
+    if(props.promise && props.data === null){
+         return <span>no data!</span>
     }
 }
 

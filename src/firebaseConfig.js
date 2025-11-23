@@ -1,6 +1,7 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 export const firebaseConfig = {
-  apiKey: import.meta.env.VITE_API,
+  apiKey: import.meta.env.VITE_apiKey,
   authDomain: import.meta.env.VITE_authDomain,
   projectId: import.meta.env.VITE_projectId,
   storageBucket: import.meta.env.VITE_storageBucket,
