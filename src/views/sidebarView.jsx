@@ -5,13 +5,10 @@ import "/src/style.css"
 export function SidebarView(props) {
     // props: number, dishes, onNumberChange, onSelectedDish, onSelectedRemoveDish
 
-    // Event handler for - button 
     function handleMinusACB() {
         console.log("Decreasing the number of guests:", props.number - 1);
         props.onNumberChange(props.number - 1);
     }
-
-    // Event handler for + button 
     function handlePlusACB() {
         console.log("Increasing the number of guests:", props.number + 1);
         props.onNumberChange(props.number + 1);
@@ -36,7 +33,7 @@ export function SidebarView(props) {
             {/* Dish table */}
             <table >
                 <tbody>
-                    {   // mapping dish array to table rows after sorting 
+                    {
                         sortDishes(props.dishes)?.map(dishTableRowCB)
                     }
                     <tr>
@@ -44,8 +41,7 @@ export function SidebarView(props) {
                         <td >Total:</td>
                         <td></td>
                         <td className="align-right">
-                            {/* Total price, scaled by guest count */}
-                            {(menuPrice(props.dishes) * props.number).toFixed(2)}
+                            {(menuPrice(props.dishes) * props.number).toFixed(2)} SEK
                         </td>
                     </tr>
                 </tbody>
@@ -55,31 +51,24 @@ export function SidebarView(props) {
 
 
     /* Array Rendering Callback */
-    // A template for each dish row 
     function dishTableRowCB(dish) {
 
-        // Nested handler for dish link click
         function handleDishLinkACB() {
             props.onSelectedDish(dish);
         }
-
-        // Nested handler for X button click 
         function handleRemoveDishACB() {
             props.onSelectedRemoveDish(dish);
         }
-
 
         return (
             // Use dish ID as the unique react key
             <tr key={dish.id}>
                 <td>
-                    {/* X button for deleting a dish */}
                     <button onClick={handleRemoveDishACB}>
                         X
                     </button>
                 </td>
                 <td>
-                    {/* dish name as a hyperlink using # as href, hyperlink destination for single page application */}
                     {/* fire a custom event, the parameter is dish as object */}
                     <a href="#/details" onClick={handleDishLinkACB}>
                         {dish.title}
@@ -90,7 +79,7 @@ export function SidebarView(props) {
                 </td>
                 <td className="align-right">
                     {/* Price per dish, scaled by guest count */}
-                    {(dish.pricePerServing * props.number).toFixed(2)}
+                    {(dish.pricePerServing * props.number).toFixed(2)} SEK
                 </td>
             </tr>
         );

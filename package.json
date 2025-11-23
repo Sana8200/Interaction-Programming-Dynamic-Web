@@ -1,34 +1,34 @@
 {
   "version": "1.0.0",
-  "module":"true",
+  "module": "true",
   "scripts": {
     "test": "vitest",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview" 
+    "serve": "vite preview"
   },
   "dependencies": {
+    "firebase": "^12.6.0",
+    "mobx": "latest",
+    "mobx-react-lite": "latest",
     "react": "latest",
-    "mobx":"latest",
-    "mobx-react-lite":"latest",
-    "firebase":"latest",
-    "vue":"latest",
-    "react-dom":"latest",
+    "react-dom": "latest",
     "react-router-dom": "latest",
+    "vue": "latest",
     "vue-router": "latest"
   },
   "devDependencies": {
-    "vitest": "latest",
     "@babel/core": "latest",
-    "babel-plugin-module-resolver": "latest",
-    "react-test-renderer": "latest",
-    "@testing-library/vue": "latest",
-    "@testing-library/react": "latest",
+    "@iprog/test": "latest",
     "@testing-library/jest-dom": "latest",
-    "vite-plugin-virtual-html": "latest",
+    "@testing-library/react": "latest",
+    "@testing-library/vue": "latest",
     "@vitejs/plugin-vue": "latest",
-    "@iprog/test":"latest",
-    "happy-dom":"latest"
+    "babel-plugin-module-resolver": "latest",
+    "happy-dom": "latest",
+    "react-test-renderer": "latest",
+    "vite-plugin-virtual-html": "latest",
+    "vitest": "latest"
   },
   "private": true
 }

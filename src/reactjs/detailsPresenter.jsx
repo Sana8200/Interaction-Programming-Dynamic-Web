@@ -2,7 +2,6 @@ import { DetailsView } from "../views/detailsView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
 import { observer } from "mobx-react-lite";
 
-
 // Details presenter decides whta to render whether DetailsView or SuspenseView
 const Details = observer(
     function DetailsRender(props) {

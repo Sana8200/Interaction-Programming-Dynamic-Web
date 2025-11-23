@@ -19,7 +19,7 @@ const Sidebar = observer(
             props.model.removeFromMenu(dish);
         }
 
-        return <SidebarView number={guestsProp}            // return (render) the SidebarView
+        return <SidebarView number={guestsProp}   
                             dishes={dishesProp}
                             onNumberChange={handleNumberChangeACB}
                             onSelectedDish = {handleDishInterestACB}
