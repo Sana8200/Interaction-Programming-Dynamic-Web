@@ -45,7 +45,7 @@ export function SidebarView(props) {
                         <td></td>
                         <td className="align-right">
                             {/* Total price, scaled by guest count */}
-                            {(menuPrice(props.dishes) * props.number).toFixed(2)} SEK
+                            {(menuPrice(props.dishes) * props.number).toFixed(2)}
                         </td>
                     </tr>
                 </tbody>
@@ -90,7 +90,7 @@ export function SidebarView(props) {
                 </td>
                 <td className="align-right">
                     {/* Price per dish, scaled by guest count */}
-                    {(dish.pricePerServing * props.number).toFixed(2)} SEK
+                    {(dish.pricePerServing * props.number).toFixed(2)}
                 </td>
             </tr>
         );

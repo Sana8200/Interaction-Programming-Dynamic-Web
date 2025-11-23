@@ -51,10 +51,10 @@ export function DetailsView(props) {
                 {/* Dish prise shown for one person, but also for all guests, ingredients quantities shown per person 
                  // (use a different prop name for this same value in detailsView, sidebarView, summeryView to illustrate that views are independent of each other) */}
                 <div className="details-price bordered-box">
+                    <p>Price: {dish.pricePerServing.toFixed(2)} per serving</p>
                     <p>
-                        Price: {dish.pricePerServing.toFixed(2)} SEK per serving</p>
-                    <p>
-                        Total for {props.guests} guests:  {(dish.pricePerServing * props.guests).toFixed(2)} SEK
+                        Total for {props.guests} guests: 
+                        {(dish.pricePerServing * props.guests).toFixed(2)}
                     </p>
                 </div>
             </div>

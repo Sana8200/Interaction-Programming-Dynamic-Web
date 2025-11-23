@@ -34,8 +34,6 @@ export function connectToPersistence(model, watchFunction) {
         if (!model.ready) {
             return;
         }
-
-        
         const dataToSave = {
             numberOfGuests: model.numberOfGuests,
             dishes: model.dishes,
@@ -50,8 +48,9 @@ export function connectToPersistence(model, watchFunction) {
     // getDoc to read from fireStore, we set the model.ready to false to prevent read-write race conditions (model.ready is false while reading)
     model.ready = false;
 
-    // Reading data from cloud, exporting data from snapshot, nad setting the new numberOfGuests, dieshes, currentDishID
+    // Reading data from cloud, exporting data from snapshot
     function readSnapShotACB(snapshot) {
+        // default : 2, null, empty array
         const data = snapshot.data() || {};
         model.numberOfGuests = data?.numberOfGuests || 2;      
         model.dishes = data?.dishes || [];
@@ -69,8 +68,3 @@ export function connectToPersistence(model, watchFunction) {
     // Read data from the cloud, getDoc will return a promise so we need to resolve it using the ACB functions 
     getDoc(theDoc).then(readSnapShotACB).catch(getDocErrorACB);
 }
-
-
-
-
-
