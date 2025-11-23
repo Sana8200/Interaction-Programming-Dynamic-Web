@@ -5,6 +5,8 @@ import { Details } from "./detailsPresenter.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
 import { observer } from "mobx-react-lite";
 import { createHashRouter, RouterProvider } from "react-router-dom";
+import { useState } from "react";
+
 import "/src/style.css"
 
 
@@ -32,6 +34,8 @@ function makeRouter(model) {
 
 const ReactRoot = observer(
     function ReactRoot(props) {
+        const [router] = useState(() => makeRouter(props.model));
+
         // rendering suspenseView if the model is not ready 
         if (!props.model.ready) {
             return (
@@ -49,7 +53,7 @@ const ReactRoot = observer(
                     <Sidebar model={props.model} />
                 </div>
                 <div className="mainContent">
-                    <RouterProvider router={makeRouter(props.model)} />
+                    <RouterProvider router={router} />
                 </div>
             </div>
         );

@@ -7,7 +7,7 @@ import vuePlugin from '@vitejs/plugin-vue';
 import  {getAliases} from "./node_modules/@iprog/test/test/aliases"
 
 const pages= {
-    "":{
+    "index":{
         entry:'/src/teacherFetch.js',
         title:"Choose framework", 
         body: 'Choose web framework: <a href="vue.html">Vue</a>,  <a href="react.html">React</a>'
