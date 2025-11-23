@@ -57,8 +57,8 @@ h2, h3 {
 .search-results-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* More breathing room */
-    justify-content: center; /* Center items if they don't fill row */
+    gap: 20px; 
+    justify-content: center; 
 }
 
 /* Individual Search Result Card */
@@ -125,12 +125,12 @@ h2, h3 {
 }
 
 .details-price {
-    background-color: #fff0f0; 
+    background-color: #902b2b; 
     padding: 20px;
     border-radius: 12px;
     font-weight: bold;
-    color: #963131;
-    border: 1px solid #ffcccc;
+    color: #ffffff;
+    border: 1px solid #902b2b;
     height: fit-content;
 }
 
@@ -179,7 +179,7 @@ h2, h3 {
 
 
 .ingredient span:nth-child(3) {
-    text-align: left; /* Align right like the image */
+    text-align: left; 
     color: #5a5959;
     font-weight: 400;
 }
@@ -209,6 +209,10 @@ button {
     border-radius: 6px;
     font-weight: 500;
     transition: background-color 0.2s;
+}
+
+.button-back{
+    float: right;
 }
 
 button:hover {
@@ -261,13 +265,17 @@ button:disabled {
     border-collapse: collapse;
     margin-top: 15px;
     font-size: 0.85rem;
-    table-layout: fixed; 
 }
 
 .sidebar-box td {
     padding: 8px 4px;
     border-bottom: 1px solid #eee;
 }
+
+.sidebar-box td:nth-child(1) { width: 35px; }    /* X button */
+.sidebar-box td:nth-child(2) { width: auto; }    /* Dish name */
+.sidebar-box td:nth-child(3) { width: 70px; }    /* Type */
+.sidebar-box td:nth-child(4) { width: 60px; }    /* Price */
 
 .sidebar-box a {
     color: #333;
@@ -340,9 +348,8 @@ button:disabled {
     }
 
     .sidebar {
-        width: 350px;         
-        min-width: 350px;     
-        
+        width: 400px;         
+        min-width: 450px;        
         /* Visuals for sidebar in desktop mode */
         background-color: rgb(221, 215, 215); 
         border-right: 1px solid #e0e0e0; /* Subtle divider */
@@ -364,3 +371,68 @@ button:disabled {
 
 
 
+
+/* --- SUSPENSE / WELCOME VIEW STYLING --- */
+
+.suspense-loading, .suspense-error {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    width: 100%;
+}
+
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 40px;
+    padding: 40px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.welcome-text h1 {
+    font-size: 2.5rem;
+    color: #963131; /* Matches your theme color */
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.welcome-text p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 10px;
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+.welcome-hint {
+    font-style: italic;
+    color: #963131 !important;
+    font-weight: 600;
+    margin-bottom: 30px !important;
+}
+
+.welcome-image {
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.welcome-image:hover {
+    transform: scale(1.02);
+}
+
+.summery-pointer {
+    color: #963131;
+    font-weight: bold;
+    text-decoration: underline;
+}

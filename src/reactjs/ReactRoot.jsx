@@ -4,19 +4,41 @@ import { Search } from "./searchPresenter.jsx";    // for rendering the SearchVi
 import { Details } from "./detailsPresenter.jsx";    // for rendering the DetailsView
 import { SuspenseView } from "../views/suspenseView.jsx";  // for rendering the SuspenseView
 import { observer } from "mobx-react-lite";
-
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import "/src/style.css"
+
+
+
+function makeRouter(model) {
+    return createHashRouter([
+        {
+            path: "/",
+            element: <Search model={model} />,
+        },
+        {
+            path: "/search",
+            element: <Search model={model} />,
+        },
+        {
+            path: "/summary",
+            element: <Summary model={model} />,
+        },
+        {
+            path: "/details",
+            element: <Details model={model} />,
+        },
+    ])
+}
 
 
 const ReactRoot = observer(
     function ReactRoot(props) {
-
         // rendering suspenseView if the model is not ready 
         if (!props.model.ready) {
             return (
                 <div className="flexParent">
                     <div className="mainContent">
-                        <SuspenseView promise={false} /> {/* Dummy promise for loading state */}
+                        <SuspenseView promise={true} /> {/* Dummy promise for loading state */}
                     </div>
                 </div>
             );
@@ -28,11 +50,8 @@ const ReactRoot = observer(
                 <div className="sidebar">
                     <Sidebar model={props.model} />
                 </div>
-
                 <div className="mainContent">
-                    <Search model={props.model} />
-                    <Details model={props.model} />
-                    <Summary model={props.model} />
+                    <RouterProvider router={makeRouter(props.model)} />
                 </div>
             </div>
         );

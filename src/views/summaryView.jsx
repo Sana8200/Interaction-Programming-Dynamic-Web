@@ -12,7 +12,12 @@ export function SummaryView(props){
               {/* DOM tree JSX code, Rendering the number of people */}
               Summary for <span title="nr guests">{props.people}</span>  
               {/* Conditional Expression .? logic */}
-              {props.people === 1 ? " person" : " persons"}:      
+              {props.people === 1 ? " person" : " persons"}:     
+              
+              <button className="button button-back"
+                      onClick={() => window.location.hash = "#/search"}>
+                  Back to Search
+              </button>
 
               <table>
                 <thead>
