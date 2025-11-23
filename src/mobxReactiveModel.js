@@ -33,7 +33,7 @@ reaction(currentDishIDACB, currentDishSideEffectACB);
 connectToPersistence(reactiveModel, reaction);
 
 
-/*
+
 // Inittial Search 
 myModel.doSearch({});
-*/
+

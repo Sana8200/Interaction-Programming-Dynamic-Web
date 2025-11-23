@@ -55,4 +55,3 @@ export function SummaryView(props){
                </tr>;
     }
 }
-
