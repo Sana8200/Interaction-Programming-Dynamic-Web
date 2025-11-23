@@ -1,3 +1,4 @@
+
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 export const firebaseConfig = {
@@ -9,6 +10,5 @@ export const firebaseConfig = {
   appId: import.meta.env.VITE_appId,
   measurementId: import.meta.env.VITE_measurementId,
 };
-
 
 

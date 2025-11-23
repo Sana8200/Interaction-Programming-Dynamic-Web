@@ -38,6 +38,8 @@ const Search = observer(
                                 onTypeChange = {handleTypeChangeACB}
                                 onSearchClick = {handleSearchACB}
                 />
+      
+                {/* Pass handleSearchACB to SuspenseView so the Welcome image can use it */}
                 { !state.data && <SuspenseView promise = {state.promise} 
                                                error = {state.error} 
                                                onStartSearch = {handleSearchACB} /> 

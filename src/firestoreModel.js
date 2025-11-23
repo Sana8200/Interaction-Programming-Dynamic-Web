@@ -11,14 +11,14 @@ window.doc = doc;
 window.setDoc = setDoc;        
 window.getDoc = getDoc;       
 
-const COLLECTION = "MyDinnerModel(private)";
+const COLLECTION = "dinnerModel795";
 
 
 export function connectToPersistence(model, watchFunction) {
     function watchDataACB() {
         return [model.numberOfGuests, model.dishes, model.currentDishId];
     }
-    const theDoc = doc(db, COLLECTION, "Planner");
+    const theDoc = doc(db, COLLECTION, "Menu");
     function saveToFireStoreACB() {
         if (!model.ready) {
             return;

@@ -1,5 +1,7 @@
 import "/src/style.css"
 
+
+// This Form should remeber the vlaues when the view is hidden and shown again to the user 
 export function SearchFormView(props) {
     // props used : dishTypeOptions, text, type, onTextChange, onTypeChange, onSearchClick
 
@@ -20,6 +22,7 @@ export function SearchFormView(props) {
         props.onSearchClick();
     }
 
+    // someProp || "" show the prop if it's defiend, or an empty string otherwise 
     return (
         <div className="search-boxes">
             <input value={props.text || ""}
