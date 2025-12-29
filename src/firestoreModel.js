@@ -49,24 +49,15 @@ export function connectToPersistence(model, watchFunction) {
     // Block saving until initial load is complete
     model.ready = false;
 
-    // Callback to process data retrieved from Firestore
+
+    // This callback is called immediately with the current data, everytime data changes in firestore to process data retrived from firestore
     function readSnapShotACB(snapshot) {
         // Use persisted data or default values (2, [], null)
-        const data = snapshot.data() || {};
-        model.numberOfGuests = data?.numberOfGuests || 2;
-        model.dishes = data?.dishes || [];
-        model.currentDishId = data?.currentDishId || null;
-
-        model.ready = true;    // Data is loaded, unblock saving/UI
-    }
-
-    // This callback is called immediately with the current data, everytime data changes in firestore
-    function readSnapShotACB(snapshot) {
         const data = snapshot.data() || {};
         model.numberOfGuests = data?.numberOfGuests || 2;      
         model.dishes = data?.dishes || [];
         model.currentDishId = data?.currentDishId || null;
-        model.ready = true;    
+        model.ready = true;      // Data is loaded, unblock saving/UI
     }
     
     function onSnapshotErrorACB(error) {
@@ -75,4 +66,5 @@ export function connectToPersistence(model, watchFunction) {
     }
     
     onSnapshot(theDoc, readSnapShotACB, onSnapshotErrorACB);        // real-time listener
+
 }
