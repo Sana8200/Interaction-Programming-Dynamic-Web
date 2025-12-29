@@ -1,4 +1,4 @@
-import "/src/style.css"
+import "/src/style/style.css";
 
 // rendering the details of a specific dish 
 export function DetailsView(props) {

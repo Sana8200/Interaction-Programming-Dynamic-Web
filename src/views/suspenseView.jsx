@@ -1,5 +1,5 @@
-import "/src/style.css"
-import dinnerImage from "/src/dinner_table.jpg";
+import "/src/style/style.css";
+import dinnerImage from "/src/style/dinner_table.jpg";
 
 export function SuspenseView(props) {
     // props used: promise, error 

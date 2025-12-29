@@ -1,4 +1,4 @@
-import "/src/style.css"
+import "/src/style/style.css";
 
 // Each object of searchResults prop is a dish search API result. Search results don't contain the full dish info, only name, id, image URL,...
 export function SearchResultsView(props) {

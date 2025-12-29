@@ -1,5 +1,5 @@
 import { dishType, menuPrice, sortDishes } from "/src/utilities.js";
-import "/src/style.css"
+import "/src/style/style.css";
 
 
 export function SidebarView(props) {

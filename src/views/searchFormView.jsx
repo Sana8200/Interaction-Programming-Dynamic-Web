@@ -1,4 +1,4 @@
-import "/src/style.css"
+import "/src/style/style.css";
 
 
 // This Form should remeber the vlaues when the view is hidden and shown again to the user 

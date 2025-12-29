@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";     // Imports Firebase initialization
 import { getFirestore, doc, setDoc, onSnapshot } from "firebase/firestore";    // Imports Firestore functions
-import { firebaseConfig } from "/src/firebaseConfig.js";    // Imports specific Firebase credentials
+import { firebaseConfig } from "/src/model/firebaseConfig.js";    // Imports specific Firebase credentials
 
 // Initialize a Firebase application instance
 const app = initializeApp(firebaseConfig);

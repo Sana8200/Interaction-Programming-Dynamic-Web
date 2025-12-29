@@ -1,7 +1,7 @@
 import "/src/teacherFetch.js"; // protection against fetch() in infinite loops
 import { reaction, observable, configure } from "mobx";
-import {dishesConst} from "/src/dishesConst.js";
-import { model } from "/src/DinnerModel.js";    // Import the javascript model 
+import { dishesConst } from "/src/model/dishesConst.js";
+import { model } from "/src/model/DinnerModel.js";    // Import the javascript model 
 import { connectToPersistence } from "./firestoreModel";
 configure({ enforceActions: "never", });  // we don't use Mobx actions in the Lab
 

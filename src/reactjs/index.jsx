@@ -5,7 +5,7 @@ window.React= {createElement:createElement, Fragment:Fragment}; // needed in the
 
 
 import { createRoot } from "react-dom/client";
-import { reactiveModel } from "/src/mobxReactiveModel";
+import { reactiveModel } from "/src/model/mobxReactiveModel.js";
 
 // mount the app in the browser page. Test at http://localhost:8080/react.html
 // Implemented root string which is the ID of the div, getElementById will find div by this id root and then render 

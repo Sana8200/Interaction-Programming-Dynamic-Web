@@ -1,5 +1,5 @@
 
-import { PROXY_KEY, PROXY_URL } from "./apiConfig";
+import { PROXY_KEY, PROXY_URL } from "../api/apiConfig";
 
 
 // gotResponseACB extracts the JSON body from the response, handling the raw HTTP respons. json() also returns a promise

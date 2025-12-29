@@ -5,7 +5,7 @@ import { Details } from "./detailsPresenter.jsx";    // for rendering the Detail
 import { SuspenseView } from "../views/suspenseView.jsx";  // for rendering the SuspenseView
 import { observer } from "mobx-react-lite";
 import { createHashRouter, RouterProvider } from "react-router-dom";
-import "/src/style.css"
+import "/src/style/style.css";
 
 
 

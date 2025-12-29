@@ -2,7 +2,7 @@ import { DetailsView } from "../views/detailsView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
 import { observer } from "mobx-react-lite";
 import { useState, useEffect } from "react";
-import { getDishDetails } from "/src/dishSource.js";
+import { getDishDetails } from "/src/model/dishSource.js";
 
 // Details presenter decides whta to render whether DetailsView or SuspenseView
 const Details = observer(
