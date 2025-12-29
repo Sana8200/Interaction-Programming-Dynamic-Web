@@ -9,25 +9,9 @@ configure({ enforceActions: "never", });  // we don't use Mobx actions in the La
 // reactive model setup uses observable from mobx to export the model (application state) to the app 
 export const reactiveModel = observable(model);   
 
-
-// ------ for Lab debug purposes ----------
 // making the reactive model available at the browser JavasScript Console
 window.myModel= reactiveModel;
 window.dishesConst= dishesConst;
-
-
-// returns the reactive value 
-function currentDishIDACB(){
-    return reactiveModel.currentDishId;
-}
-// side effect function whenever the dish ID changes
-function currentDishSideEffectACB(){
-    return reactiveModel.currentDishEffect();
-}
-// wathcer reaction for watching changes in currentDishId and triggering side effect    
-reaction(currentDishIDACB, currentDishSideEffectACB);
-
-
 
 // Connecting to Persistence. Passing the side effect watcher ensures that our firestoreModel does not depend on your reactive object technology.
 connectToPersistence(reactiveModel, reaction);

@@ -3,20 +3,15 @@
    It is an abstract object, i.e. it knows nothing about graphics and interaction.
 */
 import { resolvePromise } from "./resolvePromise.js";
-import { searchDishes, getDishDetails } from "./dishSource.js";      
+import { searchDishes } from "./dishSource.js";      
 
 
 export const model = {  
     numberOfGuests: 2,
     dishes: [],
     currentDishId: null,  // null means "intentionally empty"
-    
-    // defining searchParam and searchResultPromiseState model property (value an empty object)
-    searchParams: {},
     searchResultsPromiseState:{},
-
-    // Stores details of the currently selected dish
-    currentDishPromiseState: {},
+    currentDishPromiseState: {},     // Stores details of the currently selected dish
 
 
     setCurrentDishId(dishId){
@@ -36,8 +31,6 @@ export const model = {
         this.dishes= [...this.dishes, dishToAdd];   // Creates a new array, putting all the old dishes back in and add dishToAdd at the end 
     },
 
-
-
     // filter callback exercise
     removeFromMenu(dishToRemove){
         function shouldWeKeepDishCB(dish){
@@ -47,34 +40,11 @@ export const model = {
         this.dishes= this.dishes.filter(shouldWeKeepDishCB);   // filter creates a new array, keeping only the dishes which returned true
     },
     
-
-    // Takes a string as a parameter and sets it to the query property of searchParams
-    setSearchQuery(query){
-        this.searchParams.query = query;
-    },
-
-    // Takes a string as a parameter and sets it to the types property of searchParams 
-    setSearchType(type){
-        this.searchParams.type = type;
-    },
-
     // Takes an object as a parameter, invokes a promise and stores data
     doSearch(params){
         const searchPromise = searchDishes(params);
         resolvePromise(searchPromise, this.searchResultsPromiseState);   
     },
-
-
-    currentDishEffect(){
-        if(this.currentDishId){
-            // what should happen everytime currentDishId changes
-            const promise = getDishDetails(this.currentDishId);
-            resolvePromise(promise, this.currentDishPromiseState);
-        } else {
-            // don't initiate api call if id is falsy 
-            resolvePromise(undefined, this.currentDishPromiseState);
-        }      
-    }
 };
 
 
