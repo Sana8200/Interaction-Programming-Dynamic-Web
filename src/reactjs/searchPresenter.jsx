@@ -22,7 +22,7 @@ const Search = observer(
 
         // Triggering the search 
         function handleSearchACB() {
-            props.model.doSearch(props.model.searchParams);
+            props.model.doSearch({ query: searchText, type: searchType });
         }
 
         function handleDishClickACB(dish) {
