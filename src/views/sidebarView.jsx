@@ -20,18 +20,9 @@ export function SidebarView(props) {
     return (
         <div className="sidebar-box">
             {/* minus button disables when the number is excatly equals to 1 */}
-            <button
-                disabled={props.number === 1}
-                onClick={handleMinusACB}>
-                -
-            </button>
-
+            <button disabled={props.number === 1} onClick={handleMinusACB}> - </button> 
             {props.number}
-
-            <button
-                onClick={handlePlusACB}>
-                +
-            </button>
+            <button onClick={handlePlusACB}> + </button>
 
             {/* Dish table */}
             <table >
@@ -53,7 +44,6 @@ export function SidebarView(props) {
         </div>
     );
 
-
     /* Array Rendering Callback */
     // A template for each dish row 
     function dishTableRowCB(dish) {
@@ -68,7 +58,6 @@ export function SidebarView(props) {
             props.onSelectedRemoveDish(dish);
         }
 
-
         return (
             // Use dish ID as the unique react key
             <tr key={dish.id}>
@@ -80,7 +69,6 @@ export function SidebarView(props) {
                 </td>
                 <td>
                     {/* dish name as a hyperlink using # as href, hyperlink destination for single page application */}
-                    {/* fire a custom event, the parameter is dish as object */}
                     <a href="#/details" onClick={handleDishLinkACB}>
                         {dish.title}
                     </a>

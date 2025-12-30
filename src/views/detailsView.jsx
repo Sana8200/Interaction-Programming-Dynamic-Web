@@ -42,14 +42,9 @@ export function DetailsView(props) {
 
             {/* Top Section: Image and Price Side-by-Side */}
             <div className="top-section">
-                <img 
-                    src={dish.image}
-                    alt={dish.title}
-                    height={150}
-                />
-                
-                {/* Dish prise shown for one person, but also for all guests, ingredients quantities shown per person 
-                 // (use a different prop name for this same value in detailsView, sidebarView, summeryView to illustrate that views are independent of each other) */}
+                <img src={dish.image} alt={dish.title} height={150} />
+        
+                {/* Dish prise shown for one person, but also for all guests, ingredients quantities shown per person, views are independent of each other) */}
                 <div className="details-price bordered-box">
                     <p>
                         Price: {dish.pricePerServing.toFixed(2)} SEK per serving</p>
@@ -58,7 +53,6 @@ export function DetailsView(props) {
                     </p>
                 </div>
             </div>
-
 
             {/* Ingredients List */}
             <div className="ingredients-details bordered-box">

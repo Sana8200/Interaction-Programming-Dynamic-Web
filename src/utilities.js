@@ -49,7 +49,6 @@ export function dishType(dish){     // use filter(CB) / find(CB)  to check the g
 }
 
 
-
 export function compareDishesCB(dishA, dishB){
     const typeOrder = {   // Creating a map to give each type a numberic value 
         "" : 0,   // No type comes first 
@@ -69,7 +68,6 @@ export function compareDishesCB(dishA, dishB){
     return orderA - orderB;   // by subtracting we get the correct sort order, -1 correct order, 1 reverse order, 0 equal 
 }
 
-
 export function sortDishes(dishes){
     const dishesCopy = [...dishes];    // clone of the array 
 
@@ -77,7 +75,6 @@ export function sortDishes(dishes){
 
     return dishesCopy;
 }
-
 
 export function menuPrice(dishesArray){
     function calTotalPriceCB(accumulator, dish) {    // Callback made
@@ -90,14 +87,7 @@ export function menuPrice(dishesArray){
     return totalPrice;
 }
 
-/* 
-  This function is already implemented as it is more JavaScript + algorithms than interaction programming
 
-   Given a menu of dishes, generate a list of ingredients. 
-   If an ingredient repeats in several dishes, it will be returned only once, with the amount added up 
-   
-   As this is not an algorithm course, the function is mostly written but you have 2 callback passing TODOs.
-*/
 export function shoppingList(dishes){
     const result={}; // object used as mapping between ingredient ID and ingredient object
 
@@ -107,32 +97,19 @@ export function shoppingList(dishes){
     }
     
     // ingredientCB must be defined inside shopingList() because it needs access to `result`
-    // you will often need to define a callback inside the function where it is used, so it has access to arguments and other variables
     function ingredientCB(ingredient){
         if(result[ingredient.id] === undefined){  // more general: !result[ingredient.id]
-            // since result[ingredient.id] is not defined, it means that the ingredient is not taken into account yet
-            // so we associate the ingredient with the ID
             result[ingredient.id]={...ingredient};
-            
-            // JS Notes about the line above:
-            // 1)    result[ingredient.id] 
-            // In JS object.property is the same as object["property"] but the second notation is more powerful because you can write
-            // object[x]  where x=="property"
-            
-            // 2)    {...ingredient } creates a *copy* of the ingredient (object spread syntax)
-            // we duplicate it because we will change the object below
         } else {
-            // since result[ingredient.id] is not defined, it means that the ingredient has been encountered before.
-            // so we add up the amount:
             result[ingredient.id].amount +=  ingredient.amount;
         }
     }
 
-    const arrayOfIngredientArrays= dishes.map(keepJustIngredientsCB/*TODO pass the callback that transforms a dish to its ingredients */);
+    const arrayOfIngredientArrays= dishes.map(keepJustIngredientsCB);
     const allIngredients= arrayOfIngredientArrays.flat();    
-    allIngredients.forEach(ingredientCB/* TODO: pass the callback that treats an ingredient */);
+    allIngredients.forEach(ingredientCB);
 
-    // Note: the 3 lines above can be written as a function chain:
+    // the 3 lines above can be written as a function chain:
     // dishes.map(callback1).flat().forEach(callback2);
 
     // now we transform the result object into an array: we drop the keys and only keep the values

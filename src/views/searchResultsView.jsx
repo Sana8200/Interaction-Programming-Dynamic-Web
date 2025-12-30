@@ -3,6 +3,7 @@ import "/src/style/style.css";
 // Each object of searchResults prop is a dish search API result. Search results don't contain the full dish info, only name, id, image URL,...
 export function SearchResultsView(props) {
     // props used: searchResults, onDishClick
+
     // This creates HTML for one dish search result
     function searchResultCB(dish) {
 
@@ -19,11 +20,7 @@ export function SearchResultsView(props) {
                 className="search-result"
                 onClick={handleSearchResultsACB}>
 
-                <img src={dish.image}
-                    height={100}
-                    alt={dish.title}
-                />
-
+                <img src={dish.image} height={100} alt={dish.title}/>
                 <div>
                     {dish.title}
                 </div>

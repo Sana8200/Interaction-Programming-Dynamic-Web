@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "firebase": "^12.6.0",
+    "lucide-react": "^0.562.0",
     "mobx": "latest",
     "mobx-react-lite": "latest",
     "react": "latest",
@@ -19,7 +20,7 @@
   },
   "devDependencies": {
     "@babel/core": "latest",
-    "@iprog/test": "latest",
+    "@iprog/test": "^0.0.50",
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "latest",
     "@testing-library/vue": "latest",
