@@ -2,7 +2,6 @@ import "/src/style/style.css";
 
 // rendering the details of a specific dish 
 export function DetailsView(props) {
-    // props used : dishData, guests, idDishInMenu, onAddToMenu
 
     const dish = props.dishData;
 

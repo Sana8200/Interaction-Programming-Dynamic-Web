@@ -28,5 +28,4 @@ const Sidebar = observer(
     }
 );
 
-
 export { Sidebar };

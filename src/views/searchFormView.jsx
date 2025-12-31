@@ -2,7 +2,6 @@ import "/src/style/style.css";
 
 // This Form should remeber the vlaues when the view is hidden and shown again to the user 
 export function SearchFormView(props) {
-    // props used : dishTypeOptions, text, type, onTextChange, onTypeChange, onSearchClick
 
     function dishTypeOptionsCB(optionStrng) {
         return <option key={optionStrng} value={optionStrng}>{optionStrng}</option>;

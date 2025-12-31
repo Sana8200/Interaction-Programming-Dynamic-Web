@@ -1,10 +1,8 @@
 import { dishType, menuPrice, sortDishes } from "/src/utilities.js";
 import "/src/style/style.css";
 
-
 export function SidebarView(props) {
-    // props: number, dishes, onNumberChange, onSelectedDish, onSelectedRemoveDish
-
+    
     // Event handler for - button 
     function handleMinusACB() {
         console.log("Decreasing the number of guests:", props.number - 1);
