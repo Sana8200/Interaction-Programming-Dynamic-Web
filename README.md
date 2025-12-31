@@ -2,6 +2,12 @@
 
 A responsive web application for browsing recipes, planning dinner menus, and generating automated shopping lists. Built as part of the **DH2642 Interaction Programming** course at KTH.
 
+## 🌐 Live Demo
+
+**[https://sana-personal-web.web.app](https://sana-personal-web.web.app)**
+
+---
+
 ## 🚀 Features
 
 - **Recipe Search:** Browse recipes using the Spoonacular API
@@ -9,16 +15,22 @@ A responsive web application for browsing recipes, planning dinner menus, and ge
 - **Smart Shopping List:** Automatically aggregates ingredients from all selected dishes
 - **Dynamic Sidebar:** Real-time updates of total price and guest count
 - **Cloud Persistence:** Menu state saved automatically to Firebase Firestore
+- **User Authentication:** Sign up and login with email/password
 - **Responsive Design:** Optimized for Mobile, Tablet, and Desktop
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React 19 (Functional Components + Hooks)
-- **State Management:** MobX (Reactive Model)
-- **Build Tool:** Vite
-- **Routing:** React Router DOM
-- **Backend/Persistence:** Firebase (Firestore + Auth)
-- **API:** Spoonacular Recipe API
+| Category | Technology |
+|----------|------------|
+| **Frontend** | React 19 (Functional Components + Hooks) |
+| **State Management** | MobX |
+| **Build Tool** | Vite |
+| **Routing** | React Router DOM |
+| **Backend** | Firebase (Firestore + Auth) |
+| **Hosting** | Firebase Hosting |
+| **API** | Spoonacular Recipe API |
 
 ---
 
@@ -52,74 +64,69 @@ A responsive web application for browsing recipes, planning dinner menus, and ge
    ```bash
    npm run dev
    ```
+   Open `http://localhost:8080` in your browser.
 
 5. **Run tests**
    ```bash
    npm run test
    ```
 
+6. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+7. **Deploy to Firebase**
+   ```bash
+   firebase deploy --only hosting
+   ```
+
 ---
 
+## 📂 Project Structure
 
-#### File Organization
 ```
 src/
-├── Authservice.js           
+├── Authservice.js            # Firebase authentication functions
 ├── config/
-│   ├── apiConfig.js
-│   └── firebaseConfig.js
+│   ├── apiConfig.js          # API proxy settings
+│   └── firebaseConfig.js     # Firebase initialization
 ├── model/
-│   ├── DinnerModel.js       
-│   ├── dishSource.js        
-│   ├── firestoreModel.js   
-│   ├── mobxReactiveModel.js 
-│   └── resolvePromise.js   
+│   ├── DinnerModel.js        # Core application state
+│   ├── dishSource.js         # API calls to Spoonacular
+│   ├── firestoreModel.js     # Firebase persistence logic
+│   ├── mobxReactiveModel.js  # MobX wrapper for reactivity
+│   └── resolvePromise.js     # Promise state handler
 ├── reactjs/
-│   ├── ReactRoot.jsx       
-│   ├── detailsPresenter.jsx
-│   ├── index.jsx            
-│   ├── loginPresenter.jsx  
-│   ├── searchPresenter.jsx  
-│   ├── sidebarPresenter.jsx 
-│   ├── signupPresenter.jsx 
-│   ├── summaryPresenter.jsx 
-│   └── userPresenter.jsx    
+│   ├── ReactRoot.jsx         # Main app component with routing
+│   ├── detailsPresenter.jsx  # Dish details logic
+│   ├── index.jsx             # App entry point
+│   ├── loginPresenter.jsx    # Login logic
+│   ├── searchPresenter.jsx   # Search logic
+│   ├── sidebarPresenter.jsx  # Sidebar logic
+│   ├── signupPresenter.jsx   # Signup logic
+│   ├── summaryPresenter.jsx  # Shopping list logic
+│   └── userPresenter.jsx     # User bar logic
 ├── style/
-│   └── style.css
+│   └── style.css             # Application styles
 ├── views/
-│   ├── detailsView.jsx     
-│   ├── loginView.jsx        
-│   ├── searchFormView.jsx   
-│   ├── searchResultsView.jsx 
-│   ├── sidebarView.jsx      
-│   ├── signupView.jsx       
-│   ├── summaryView.jsx      
-│   ├── suspenseView.jsx     
-│   └── userView.jsx         
-├── utilities.js             
-└── teacherFetch.js         
+│   ├── detailsView.jsx       # Dish details UI
+│   ├── loginView.jsx         # Login form UI
+│   ├── searchFormView.jsx    # Search form UI
+│   ├── searchResultsView.jsx # Search results grid
+│   ├── sidebarView.jsx       # Sidebar with menu
+│   ├── signupView.jsx        # Signup form UI
+│   ├── summaryView.jsx       # Shopping list UI
+│   ├── suspenseView.jsx      # Loading/welcome states
+│   └── userView.jsx          # User bar UI
+├── utilities.js              # Sorting, filtering helpers
+└── teacherFetch.js           # Infinite loop protection
 ```
-
-
----
-
-## 📂 Key Files Explained
-
-| File | Purpose |
-|------|---------|
-| `model/DinnerModel.js` | Core application state (guests, dishes, search) |
-| `model/firestoreModel.js` | Firebase persistence logic |
-| `model/mobxReactiveModel.js` | MobX wrapper for reactivity |
-| `AuthService.js` | Firebase authentication functions |
-| `reactjs/ReactRoot.jsx` | Main app component with routing |
-| `utilities.js` | Sorting, filtering, calculation helpers |
 
 ---
 
 ## 📝 License
 
-This project is for educational purposes. Recipe data provided by Spoonacular.
-
-
+This project is for educational purposes. Recipe data provided by [Spoonacular](https://spoonacular.com/).
 
 
