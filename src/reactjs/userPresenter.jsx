@@ -1,31 +1,26 @@
-// User info and logout button
 import { observer } from "mobx-react-lite";
-import { logout } from "/src/Authservice.js";  
-import { UserBarView } from "/src/views/userView.jsx";
+import { logout } from "/src/Authservice.js";
+import { UserBarView } from "../views/userView.jsx";
 
-export const UserBar = observer(
-    function UserBarPresenter(props) {
+export const UserBar = observer(function UserBar(props) {
+    const { model } = props;
 
-        // When user clicks Sign Out
-        async function handleLogoutACB() {
-            const result = await logout();
-            
-            if (!result.success) {
-                console.error("Logout failed:", result.error);
-            }
-            // onAuthChange in firestoreModel will detect the logout, ReactRoot will automatically show login screen, NO manual redirect needed
+    async function handleLogout() {
+        const result = await logout();
+        if (!result.success) {
+            console.error("Logout failed:", result.error);
         }
-
-        // not rendering if there is no user 
-        if (!props.model.user) {
-            return null;
-        }
-
-        return (
-            <UserBarView 
-                user={props.model.user}
-                onLogout={handleLogoutACB}
-            />
-        );
+        // onAuthChange in firestoreModel detects logout automatically
     }
-);
+
+    if (!model.user) {
+        return null;
+    }
+
+    return (
+        <UserBarView
+            user={model.user}
+            onLogout={handleLogout}
+        />
+    );
+});

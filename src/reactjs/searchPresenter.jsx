@@ -1,84 +1,71 @@
-import { observer } from "mobx-react-lite"; 
+import { observer } from "mobx-react-lite";
+import { useState, useEffect, useRef } from "react";
 import { SearchFormView } from "../views/searchFormView.jsx";
 import { SearchResultsView } from "../views/searchResultsView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
-import { useState, useEffect, useRef } from "react";
 
-const Search = observer(
-    function SearchRender(props){
-        
-        const state = props.model.searchResultsPromiseState;
-        const dishTypeOptions = ["starter", "main course", "dessert"];
+const DISH_TYPES = ["starter", "main course", "dessert"];
+const DEBOUNCE_MS = 1000;
 
-        // Component state for search parameters (moved from mode to presenter to use useState and useEffect)
-        const [searchText, setSearchText] = useState("");
-        const [searchType, setSearchType] = useState("");
+export const Search = observer(function Search(props) {
+    const { model } = props;
+    const state = model.searchResultsPromiseState;
 
-        // Ref to store the timeout ID (persists across renders without causing re-render)
-        const debounceTimer = useRef(null);
+    const [searchText, setSearchText] = useState("");
+    const [searchType, setSearchType] = useState("");
+    const debounceTimer = useRef(null);
 
-        // Debounced search effect - runs when searchText or searchType changes
-        useEffect(() => {
-            // Clearning existence timers 
+    // Debounced search
+    useEffect(() => {
+        if (debounceTimer.current) {
+            clearTimeout(debounceTimer.current);
+        }
+
+        debounceTimer.current = setTimeout(() => {
+            model.doSearch({ query: searchText, type: searchType });
+        }, DEBOUNCE_MS);
+
+        return () => {
             if (debounceTimer.current) {
                 clearTimeout(debounceTimer.current);
             }
+        };
+    }, [searchText, searchType, model]);
 
-            // Set new timer - wait 1 second before searching
-            debounceTimer.current = setTimeout(() => {
-                props.model.doSearch({ query: searchText, type: searchType });
-            }, 1000);
-
-            // clear timer if component unmounts or dependencies change
-            return () => {
-                if (debounceTimer.current) {
-                    clearTimeout(debounceTimer.current);
-                }
-            };
-        }, [searchText, searchType]);  // Re-run when text or type changes, this is dependency parameters, so if these changes, re run 
-
-        
-        function handleTextChagneACB(text) {
-            setSearchText(text);
+    function handleSearch() {
+        if (debounceTimer.current) {
+            clearTimeout(debounceTimer.current);
         }
-
-        function handleTypeChangeACB(type) {
-            setSearchType(type);
-        }
-
-        // Manual search (button click) - immediate, no debounce
-        function handleSearchACB() {
-            // Clear any pending debounced search
-            if (debounceTimer.current) {
-                clearTimeout(debounceTimer.current);
-            }
-            props.model.doSearch({ query: searchText, type: searchType });
-        }
-
-
-        function handleDishClickACB(dish) {
-            props.model.setCurrentDishId(dish.id);    
-        }
-
-        return (
-            <div>
-                <SearchFormView dishTypeOptions = {dishTypeOptions}
-                                text = {searchText}
-                                type = {searchType}
-                                onTextChange = {handleTextChagneACB}
-                                onTypeChange = {handleTypeChangeACB}
-                                onSearchClick = {handleSearchACB}
-                />
-      
-                { !state.data && <SuspenseView promise = {state.promise} 
-                                               error = {state.error} 
-                                               onStartSearch = {handleSearchACB} /> 
-                            || <SearchResultsView searchResults = {state.data}
-                                                  onDishClick = {handleDishClickACB} /> 
-                }
-            </div>
-        );
+        model.doSearch({ query: searchText, type: searchType });
     }
-);
 
-export { Search };
+    function handleDishClick(dish) {
+        model.setCurrentDishId(dish.id);
+    }
+
+    return (
+        <div>
+            <SearchFormView
+                dishTypeOptions={DISH_TYPES}
+                text={searchText}
+                type={searchType}
+                onTextChange={setSearchText}
+                onTypeChange={setSearchType}
+                onSearchClick={handleSearch}
+            />
+
+            {state.data ? (
+                <SearchResultsView
+                    searchResults={state.data}
+                    onDishClick={handleDishClick}
+                />
+            ) : (
+                <SuspenseView
+                    promise={state.promise}
+                    error={state.error}
+                    onStartSearch={handleSearch}
+                />
+            )}
+        </div>
+    );
+});
