@@ -1,50 +1,43 @@
-import {sortIngredients} from "/src/utilities.js";
-import "/src/style/style.css";
+import { sortIngredients } from "../utilities.js";
+import "../style/style.css";
 
-/* Functional JSX component. Name must start with capital letter */
-export function SummaryView(props){    
+export function SummaryView(props) {
+    const { people, ingredients } = props;
+
     return (
-            <div className="summary-view">
+        <div className="summary-view">
+            Summary for <span title="nr guests">{people}</span>
+            {people === 1 ? " person" : " persons"}:
 
-              {/* DOM tree JSX code, Rendering the number of people */}
-              Summary for <span title="nr guests">{props.people}</span>  
-              {/* Conditional Expression .? logic */}
-              {props.people === 1 ? " person" : " persons"}:     
-              
-              <button className="button button-back"
-                      onClick={() => window.location.hash = "#/search"}>
-                  Back to Search
-              </button>
+            <button
+                className="button button-back"
+                onClick={() => window.location.hash = "#/search"}
+            >
+                Back to Search
+            </button>
 
-              <table>
+            <table>
                 <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Aisle</th>
-                    <th>Quantity</th>
-                    <th>Unit</th>
-                  </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Aisle</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                    </tr>
                 </thead>
-
                 <tbody>
-                    {sortIngredients(props.ingredients)?.map(ingredientTableRowCB)}
+                    {sortIngredients(ingredients).map(ingredient => (
+                        <tr key={ingredient.id}>
+                            <td>{ingredient.name}</td>
+                            <td>{ingredient.aisle}</td>
+                            <td className="align-right">
+                                {(ingredient.amount * people).toFixed(2)}
+                            </td>
+                            <td>{ingredient.unit}</td>
+                        </tr>
+                    ))}
                 </tbody>
-              </table>
-            </div>
+            </table>
+        </div>
     );
-    
-
-    /* callback for Array Rendering in TW 1.3 */
-    // This is a template for each single row that adds the array rendering keys by setting it to the ingredients id property 
-    function ingredientTableRowCB(ingr){ 
-        return <tr key={ingr.id} >    
-                 <td>{ingr.name}</td>
-                 <td>{ingr.aisle}</td>
-                 <td className="align-right">
-                  {(ingr.amount * props.people).toFixed(2)}    {/* gets the total amoung of that ingredients needed for all the guests */}
-                 </td>
-                 <td>{ingr.unit}</td>
-               </tr>;
-    }
 }
-

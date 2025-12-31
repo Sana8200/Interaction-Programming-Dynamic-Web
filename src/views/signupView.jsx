@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import "/src/style/style.css";
+import "../style/style.css";
 
 export function SignupView(props) {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
-    function handleSubmitACB(event) {
+    function handleSubmit(event) {
         event.preventDefault();
         props.onSignup();
     }
@@ -17,7 +17,7 @@ export function SignupView(props) {
                 <h1 className="auth-title">Dinner Planner</h1>
                 <h2 className="auth-subtitle">Create your account</h2>
 
-                <form onSubmit={handleSubmitACB}>
+                <form onSubmit={handleSubmit}>
                     {props.error && (
                         <div className="auth-error">{props.error}</div>
                     )}

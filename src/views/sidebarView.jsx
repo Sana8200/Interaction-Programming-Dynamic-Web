@@ -1,85 +1,50 @@
-import { dishType, menuPrice, sortDishes } from "/src/utilities.js";
-import "/src/style/style.css";
+import { dishType, menuPrice, sortDishes } from "../utilities.js";
+import "../style/style.css";
 
 export function SidebarView(props) {
-
-    // Event handler for - button 
-    function handleMinusACB() {
-        console.log("Decreasing the number of guests:", props.number - 1);
-        props.onNumberChange(props.number - 1);
-    }
-
-    // Event handler for + button 
-    function handlePlusACB() {
-        console.log("Increasing the number of guests:", props.number + 1);
-        props.onNumberChange(props.number + 1);
-    }
+    const { number, dishes, onNumberChange, onSelectedDish, onSelectedRemoveDish } = props;
 
     return (
         <div className="sidebar-box">
-            {/* minus button disables when the number is excatly equals to 1 */}
-            <button disabled={props.number === 1} onClick={handleMinusACB}> 
-                - </button>
-              {props.number}
-            <button onClick={handlePlusACB}> + </button>
+            {/* Guest Counter */}
+            <button disabled={number === 1} onClick={() => onNumberChange(number - 1)}>
+                -
+            </button>
+            {number}
+            <button onClick={() => onNumberChange(number + 1)}>+</button>
 
-            {/* Dish table */}
-            <table >
+            {/* Dish Table */}
+            <table>
                 <tbody>
-                    {   // mapping dish array to table rows after sorting 
-                        sortDishes(props.dishes)?.map(dishTableRowCB)
-                    }
+                    {sortDishes(dishes).map(dish => (
+                        <tr key={dish.id}>
+                            <td>
+                                <button onClick={() => onSelectedRemoveDish(dish)}>X</button>
+                            </td>
+                            <td>
+                                <a
+                                    href="#/details"
+                                    onClick={() => onSelectedDish(dish)}
+                                >
+                                    {dish.title}
+                                </a>
+                            </td>
+                            <td>{dishType(dish)}</td>
+                            <td className="align-right">
+                                {(dish.pricePerServing * number).toFixed(2)} SEK
+                            </td>
+                        </tr>
+                    ))}
                     <tr>
                         <td></td>
-                        <td >Total:</td>
+                        <td>Total:</td>
                         <td></td>
                         <td className="align-right">
-                            {/* Total price, scaled by guest count */}
-                            {(menuPrice(props.dishes) * props.number).toFixed(2)}
+                            {(menuPrice(dishes) * number).toFixed(2)} SEK
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     );
-
-    /* Array Rendering Callback */
-    // A template for each dish row 
-    function dishTableRowCB(dish) {
-
-        // Nested handler for dish link click
-        function handleDishLinkACB() {
-            props.onSelectedDish(dish);
-        }
-
-        // Nested handler for X button click 
-        function handleRemoveDishACB() {
-            props.onSelectedRemoveDish(dish);
-        }
-
-        return (
-            // Use dish ID as the unique react key
-            <tr key={dish.id}>
-                <td>
-                    {/* X button for deleting a dish */}
-                    <button onClick={handleRemoveDishACB}>
-                        X
-                    </button>
-                </td>
-                <td>
-                    {/* fire a custom event, the parameter is dish as object */}
-                    <a href="#/details" onClick={handleDishLinkACB}>
-                        {dish.title}
-                    </a>
-                </td>
-                <td>
-                    {dishType(dish)}
-                </td>
-                <td className="align-right">
-                    {/* Price per dish, scaled by guest count */}
-                    {(dish.pricePerServing * props.number).toFixed(2)}
-                </td>
-            </tr>
-        );
-    }
 }

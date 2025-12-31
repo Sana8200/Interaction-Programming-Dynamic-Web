@@ -1,34 +1,13 @@
-import "/src/style/style.css";
+import "../style/style.css";
 
-// rendering the details of a specific dish 
 export function DetailsView(props) {
-
-    const dish = props.dishData;
-
-    // Callback for ingredients rendering (for rendering each ingredient in the list(name, amount, measurement unit))
-    function ingredientCB(ingredient){
-        return(
-            <div key = {ingredient.id}  className="ingredient">
-                <span>{ingredient.name}</span>
-                <span>{ingredient.amount}</span>
-                <span>{ingredient.unit}</span>
-            </div>
-        );
-    }
-
-    // event handler for clicking adding to menu
-    function handleAddToMenuACB(){
-        props.onAddToMenu();
-    };
-
+    const { dishData: dish, guests, isDishInMenu, onAddToMenu } = props;
 
     return (
         <div className="details-view">
-
-            {/* Action Buttons (Add/Cancel) */}
+            {/* Action Buttons */}
             <div className="button-details">
-                {/* if the dish is already in the menu, the add to menu button disabled, otherwise add to menu */}
-                <button disabled={props.isDishInMenu} onClick={handleAddToMenuACB}>
+                <button disabled={isDishInMenu} onClick={onAddToMenu}>
                     Add to menu
                 </button>
                 <button onClick={() => window.location.hash = "#/search"}>
@@ -36,40 +15,40 @@ export function DetailsView(props) {
                 </button>
             </div>
 
-            {/* Dish Header: Title */}
+            {/* Dish Title */}
             <h2>{dish.title}</h2>
 
-            {/* Top Section: Image and Price Side-by-Side */}
+            {/* Image and Price */}
             <div className="top-section">
                 <img src={dish.image} alt={dish.title} height={150} />
-        
-                {/* Dish prise shown for one person, but also for all guests, ingredients quantities shown per person, views are independent of each other) */}
                 <div className="details-price bordered-box">
-                    <p>
-                        Price: {dish.pricePerServing.toFixed(2)} SEK per serving</p>
-                    <p>
-                        Total for {props.guests} guests: {(dish.pricePerServing * props.guests).toFixed(2)} SEK
-                    </p>
+                    <p>Price: {dish.pricePerServing.toFixed(2)} SEK per serving</p>
+                    <p>Total for {guests} guests: {(dish.pricePerServing * guests).toFixed(2)} SEK</p>
                 </div>
             </div>
 
-            {/* Ingredients List */}
+            {/* Ingredients */}
             <div className="ingredients-details bordered-box">
                 <h3>Ingredients</h3>
-                {dish.extendedIngredients.map(ingredientCB)}
+                {dish.extendedIngredients.map(ingredient => (
+                    <div key={ingredient.id} className="ingredient">
+                        <span>{ingredient.name}</span>
+                        <span>{ingredient.amount}</span>
+                        <span>{ingredient.unit}</span>
+                    </div>
+                ))}
             </div>
 
-            {/* Cooking Instructions */}
+            {/* Instructions */}
             <div className="details-instructions bordered-box">
                 <h3>Instructions</h3>
                 <p>{dish.instructions}</p>
             </div>
 
-            {/* Link to the dish source website for more information */}
+            {/* Source Link */}
             <a href={dish.sourceUrl} target="_blank" rel="noopener noreferrer">
-                    More information
+                More information
             </a>
-
         </div>
     );
 }
