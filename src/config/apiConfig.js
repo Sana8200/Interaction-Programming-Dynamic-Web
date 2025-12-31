@@ -1,6 +1,8 @@
-const PROXY_URL = import.meta.env.VITE_API_URL;
-const PROXY_KEY= import.meta.env.VITE_API_KEY;
-
-export { PROXY_KEY, PROXY_URL };
+/**
+ * API Configuration
+ * Spoonacular API proxy settings
+ */
+export const PROXY_URL = import.meta.env.VITE_API_URL;
+export const PROXY_KEY = import.meta.env.VITE_API_KEY;
 
 
