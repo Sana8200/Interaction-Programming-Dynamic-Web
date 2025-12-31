@@ -12,11 +12,6 @@ const pages= {
         title:"DinnerPlanner React", 
         body: '<div id="root"></div>'
     },
-    "vue":{
-        entry: '/src/vuejs/index.jsx',
-        title:"DinnerPlanner Vue", 
-        body: '<div id="root"></div>'
-    },
     "react":{
         entry: '/src/reactjs/index.jsx',
         title:"DinnerPlanner React", 
