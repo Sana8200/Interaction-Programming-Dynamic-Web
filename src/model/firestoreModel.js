@@ -1,12 +1,6 @@
-import { initializeApp } from "firebase/app";     // Imports Firebase initialization
-import { getFirestore, doc, setDoc, onSnapshot } from "firebase/firestore";    // Imports Firestore functions
-import { firebaseConfig } from "/src/config/firebaseConfig.js";    // Imports specific Firebase credentials
-
-// Initialize a Firebase application instance
-const app = initializeApp(firebaseConfig);
-
-// Get the key to the Firestore database service
-const db = getFirestore(app);
+import { doc, setDoc, onSnapshot } from "firebase/firestore";
+import { db } from "/src/firebaseConfig.js";
+import { onAuthChange } from "/src/AuthService.js";
 
 // Expose key functions to the window for easy testing/debugging
 window.db = db;
@@ -14,57 +8,83 @@ window.doc = doc;
 window.setDoc = setDoc;
 window.onSnapshot = onSnapshot;
 
-// Defines the collection path and document name for user data
+// Defines the collection path for user data
 const COLLECTION = "dinnerModel795";
 
 // Connects model changes to Firestore (Save/Load logic)
 export function connectToPersistence(model, watchFunction) {
 
-    // Returns the three model properties that need to be persisted
-    function watchDataACB() {
-        return [model.numberOfGuests, model.dishes, model.currentDishId];
-    }
+    // Store cleanup function for snapshot listener
+    let unsubscribeSnapshot = null;
 
-    // Reference to the specific document path for this user/app
-    const theDoc = doc(db, COLLECTION, "Menu");
+    onAuthChange(function (user) {
 
-    // Side effect to run when model data changes (triggers watchFunction)
-    function saveToFireStoreACB() {
-        // Prevents saving while data is still loading (initial read)
-        if (!model.ready) {
-            return;
+        // Clean up previous listener when auth state changes
+        if (unsubscribeSnapshot) {
+            unsubscribeSnapshot();
+            unsubscribeSnapshot = null;
         }
-        const dataToSave = {
-            numberOfGuests: model.numberOfGuests,
-            dishes: model.dishes,
-            currentDishId: model.currentDishId
-        };
-        // Save the data to Firestore, merging with existing fields
-        setDoc(theDoc, dataToSave, { merge: true });
-    }
 
-    // Set up MobX/Vue reaction: when watchDataACB changes, call saveToFireStoreACB
-    watchFunction(watchDataACB, saveToFireStoreACB);
+        if (user) {
+            // USER LOGGED IN
+            model.setUser(user);
+            model.ready = false;
 
-    // Block saving until initial load is complete
-    model.ready = false;
+            // Wait for Firebase Auth to propagate before accessing Firestore
+            setTimeout(function connectToFirestoreACB() {
 
+                // Reference to the user's document: dinnerModel795/{userId}
+                const theDoc = doc(db, COLLECTION, user.uid);
 
-    // This callback is called immediately with the current data, everytime data changes in firestore to process data retrived from firestore
-    function readSnapShotACB(snapshot) {
-        // Use persisted data or default values (2, [], null)
-        const data = snapshot.data() || {};
-        model.numberOfGuests = data?.numberOfGuests || 2;      
-        model.dishes = data?.dishes || [];
-        model.currentDishId = data?.currentDishId || null;
-        model.ready = true;      // Data is loaded, unblock saving/UI
-    }
-    
-    function onSnapshotErrorACB(error) {
-        console.error("Error listening to persistence:", error);
-        model.ready = true;   
-    }
-    
-    onSnapshot(theDoc, readSnapShotACB, onSnapshotErrorACB);        // real-time listener
+                // Returns the three model properties that need to be persisted
+                function watchDataACB() {
+                    return [model.numberOfGuests, model.dishes, model.currentDishId];
+                }
 
+                // Saves data to Firestore when model changes
+                function saveToFireStoreACB() {
+                    if (!model.ready) {
+                        return;
+                    }
+                    const dataToSave = {
+                        numberOfGuests: model.numberOfGuests,
+                        dishes: model.dishes,
+                        currentDishId: model.currentDishId
+                    };
+                    // Catch errors silently - next save will work
+                    setDoc(theDoc, dataToSave, { merge: true }).catch(function (error) {
+                        console.log("Saving, saving in next try");
+                    });
+                }
+
+                // Set up MobX reaction: when data changes, save to Firestore
+                watchFunction(watchDataACB, saveToFireStoreACB);
+
+                // Callback for reading Firestore data
+                function readSnapShotACB(snapshot) {
+                    const data = snapshot.data() || {};
+                    model.numberOfGuests = data?.numberOfGuests || 2;
+                    model.dishes = data?.dishes || [];
+                    model.currentDishId = data?.currentDishId || null;
+                    model.ready = true;
+                }
+
+                function onSnapshotErrorACB(error) {
+                    console.error("Error listening to persistence:", error);
+                    // Still set ready so UI works even if persistence fails
+                    model.ready = true;
+                }
+
+                // Real-time listener for this user's document
+                unsubscribeSnapshot = onSnapshot(theDoc, readSnapShotACB, onSnapshotErrorACB);
+
+            }, 500);  // 500ms delay
+
+        } else {
+            // USER LOGGED OUT
+            model.setUser(null);
+            model.resetToDefaults();
+            model.ready = true;
+        }
+    });
 }
