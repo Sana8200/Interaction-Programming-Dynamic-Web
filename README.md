@@ -64,7 +64,7 @@ A responsive web application for browsing recipes, planning dinner menus, and ge
 #### File Organization
 ```
 src/
-├── AuthService.js           # Renamed (was Authservice.js)
+├── Authservice.js           
 ├── config/
 │   ├── apiConfig.js
 │   └── firebaseConfig.js
