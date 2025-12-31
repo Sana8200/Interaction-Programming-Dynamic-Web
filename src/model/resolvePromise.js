@@ -1,5 +1,3 @@
-
-
 // promise state 
 /* Promise only executes only when it's truthy, if promise is null or underfined promise state should still be set 
    (reset in this case) but promise shouldn't be executed. */
@@ -9,7 +7,6 @@ export function resolvePromise(prms, promiseState){
     promiseState.promise = prms;
     promiseState.data = null;
     promiseState.error = null;
-
     
     // If the promise has not yet been set, we will show no data
     if(!prms){
@@ -18,7 +15,6 @@ export function resolvePromise(prms, promiseState){
         promiseState.error = null;
         return;
     }
-
 
     // save its parameters into promiseState.data (data and error cannot be both truthy at the same time)
     function datraACB(data){

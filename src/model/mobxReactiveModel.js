@@ -5,7 +5,6 @@ import { model } from "/src/model/DinnerModel.js";    // Import the javascript m
 import { connectToPersistence } from "./firestoreModel";
 configure({ enforceActions: "never", });  // we don't use Mobx actions in the Lab
 
-
 // reactive model setup uses observable from mobx to export the model (application state) to the app 
 export const reactiveModel = observable(model);   
 
