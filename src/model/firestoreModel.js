@@ -1,6 +1,12 @@
+/**
+ * Firestore Model
+ * Handles persistence of model state to Firebase Firestore
+ */
 import { doc, setDoc, onSnapshot } from "firebase/firestore";
-import { db } from "/src/config/firebaseConfig.js";
-import { onAuthChange } from "/src/Authservice.js";
+import { db } from "../config/firebaseConfig.js";
+import { onAuthChange } from "../AuthService.js";
+
+const COLLECTION = "dinnerModel";
 
 // Expose key functions to the window for easy testing/debugging
 window.db = db;
@@ -8,83 +14,106 @@ window.doc = doc;
 window.setDoc = setDoc;
 window.onSnapshot = onSnapshot;
 
-// Defines the collection path for user data
-const COLLECTION = "dinnerModel795";
-
-// Connects model changes to Firestore (Save/Load logic)
+/**
+ * Connect model to Firestore persistence
+ * @param {object} model - The reactive model
+ * @param {function} watchFunction - MobX reaction function
+ */
 export function connectToPersistence(model, watchFunction) {
-
-    // Store cleanup function for snapshot listener
     let unsubscribeSnapshot = null;
+    let unsubscribeReaction = null;
 
-    onAuthChange(function (user) {
-
-        // Clean up previous listener when auth state changes
+    onAuthChange((user) => {
+        // Cleanup previous listeners
         if (unsubscribeSnapshot) {
             unsubscribeSnapshot();
             unsubscribeSnapshot = null;
         }
+        if (unsubscribeReaction) {
+            unsubscribeReaction();
+            unsubscribeReaction = null;
+        }
 
         if (user) {
-            // USER LOGGED IN
-            model.setUser(user);
-            model.ready = false;
+            handleUserLogin(user, model, watchFunction);
+        } else {
+            handleUserLogout(model);
+        }
+    });
 
-            // Wait for Firebase Auth to propagate before accessing Firestore
-            setTimeout(function connectToFirestoreACB() {
+    function handleUserLogin(user, model, watchFunction) {
+        model.setUser(user);
+        model.setReady(false);
 
-                // Reference to the user's document: dinnerModel795/{userId}
-                const theDoc = doc(db, COLLECTION, user.uid);
+        const userDoc = doc(db, COLLECTION, user.uid);
 
-                // Returns the three model properties that need to be persisted
-                function watchDataACB() {
-                    return [model.numberOfGuests, model.dishes, model.currentDishId];
+        // First: Load data from Firestore
+        unsubscribeSnapshot = onSnapshot(
+            userDoc,
+            (snapshot) => {
+                const data = snapshot.data();
+                
+                if (data) {
+                    // Load existing data
+                    model.numberOfGuests = data.numberOfGuests ?? 2;
+                    model.dishes = data.dishes ?? [];
+                    model.currentDishId = data.currentDishId ?? null;
+                } else {
+                    // New user - initialize with defaults and save
+                    model.numberOfGuests = 2;
+                    model.dishes = [];
+                    model.currentDishId = null;
+                    
+                    // Create initial document for new user
+                    setDoc(userDoc, {
+                        numberOfGuests: 2,
+                        dishes: [],
+                        currentDishId: null
+                    }).catch(err => console.error("Failed to create initial doc:", err));
                 }
 
-                // Saves data to Firestore when model changes
-                function saveToFireStoreACB() {
-                    if (!model.ready) {
-                        return;
-                    }
+                // Mark as ready AFTER loading data
+                if (!model.ready) {
+                    model.setReady(true);
+                    
+                    // Setup save reaction AFTER first load completes
+                    setupSaveReaction();
+                }
+            },
+            (error) => {
+                console.error("Firestore listener error:", error);
+                model.setReady(true); // Allow UI to work even if persistence fails
+            }
+        );
+
+        function setupSaveReaction() {
+            // Watch for changes and save to Firestore
+            unsubscribeReaction = watchFunction(
+                // What to watch
+                () => [model.numberOfGuests, model.dishes, model.currentDishId],
+                // What to do when it changes
+                () => {
+                    if (!model.ready) return;
+                    
                     const dataToSave = {
                         numberOfGuests: model.numberOfGuests,
                         dishes: model.dishes,
                         currentDishId: model.currentDishId
                     };
-                    // Catch errors silently - next save will work
-                    setDoc(theDoc, dataToSave, { merge: true }).catch(function (error) {
-                        console.log("Saving, saving in next try");
-                    });
-                }
 
-                // Set up MobX reaction: when data changes, save to Firestore
-                watchFunction(watchDataACB, saveToFireStoreACB);
-
-                // Callback for reading Firestore data
-                function readSnapShotACB(snapshot) {
-                    const data = snapshot.data() || {};
-                    model.numberOfGuests = data?.numberOfGuests || 2;
-                    model.dishes = data?.dishes || [];
-                    model.currentDishId = data?.currentDishId || null;
-                    model.ready = true;
-                }
-
-                function onSnapshotErrorACB(error) {
-                    console.error("Error listening to persistence:", error);
-                    // Still set ready so UI works even if persistence fails
-                    model.ready = true;
-                }
-
-                // Real-time listener for this user's document
-                unsubscribeSnapshot = onSnapshot(theDoc, readSnapShotACB, onSnapshotErrorACB);
-
-            }, 500);  // 500ms delay
-
-        } else {
-            // USER LOGGED OUT
-            model.setUser(null);
-            model.resetToDefaults();
-            model.ready = true;
+                    setDoc(userDoc, dataToSave, { merge: true })
+                        .then(() => console.log("Data saved to Firestore"))
+                        .catch((err) => console.error("Save failed:", err));
+                },
+                // Options: don't fire immediately (we just loaded)
+                { fireImmediately: false }
+            );
         }
-    });
+    }
+
+    function handleUserLogout(model) {
+        model.setUser(null);
+        model.resetToDefaults();
+        model.setReady(true);
+    }
 }
