@@ -1,4 +1,4 @@
-import { PROXY_KEY, PROXY_URL } from "/src/api/apiConfig.js";
+import { PROXY_KEY, PROXY_URL } from "/src/config/apiConfig.js";
 
 // Callback to handle HTTP response and parse JSON.
 function gotResponseACB(response) {
