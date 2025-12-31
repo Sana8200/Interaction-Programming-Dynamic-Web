@@ -219,7 +219,6 @@ button:disabled {
     color: #5a5959;
 }
 
-
 /* ===== SIDEBAR ===== */
 .sidebar-box {
     padding: 20px;
@@ -293,7 +292,6 @@ button:disabled {
     text-decoration: underline;
 }
 
-
 /* ===== SUMMARY VIEW ===== */
 .summary-view {
     background-color: rgb(221, 215, 215);
@@ -360,7 +358,6 @@ button:disabled {
     color: #df6868;
 }
 
-
 /* ===== SUSPENSE / WELCOME ===== */
 .suspense-loading,
 .suspense-error {
@@ -417,7 +414,6 @@ button:disabled {
 .welcome-image:hover {
     transform: scale(1.02);
 }
-
 
 /* ===== AUTH PAGES ===== */
 .auth-container {
@@ -589,7 +585,6 @@ button:disabled {
     color: #7a2626;
     text-decoration: underline;
 }
-
 
 /* ===== USER BAR ===== */
 .user-bar {

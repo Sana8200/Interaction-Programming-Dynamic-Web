@@ -1,79 +1,68 @@
-import { DetailsView } from "../views/detailsView.jsx";
-import { SuspenseView } from "../views/suspenseView.jsx";
 import { observer } from "mobx-react-lite";
 import { useState, useEffect } from "react";
-import { getDishDetails } from "/src/model/dishSource.js";
+import { getDishDetails } from "../model/dishSource.js";
+import { DetailsView } from "../views/detailsView.jsx";
+import { SuspenseView } from "../views/suspenseView.jsx";
 
-// Details presenter decides whta to render whether DetailsView or SuspenseView
-const Details = observer(
-    function DetailsRender(props) {
+export const Details = observer(function Details(props) {
+    const { model } = props;
+    const [promiseState, setPromiseState] = useState({
+        promise: null,
+        data: null,
+        error: null
+    });
 
-        const guests = props.model.numberOfGuests;
+    useEffect(() => {
+        if (!model.currentDishId) {
+            setPromiseState({ promise: null, data: null, error: null });
+            return;
+        }
 
-        // local state to track the promise, data, and error
-        const [promiseState, setPromiseState] = useState({ promise: null, data: null, error: null });
-        const currentDishId = props.model.currentDishId;
+        const promise = getDishDetails(model.currentDishId);
+        setPromiseState({ promise, data: null, error: null });
 
-        // this part runs whenever currentDishId changes
-        useEffect(() => {
-            // no current dish id selected, reset 
-            if (!currentDishId) {
-                setPromiseState({ promise: null, data: null, error: null });
-                return;
-            }
-            // API call
-            const promise = getDishDetails(currentDishId);
+        let isCancelled = false;
 
-            // Set loading state (spinner) immediately after api call 
-            setPromiseState({ promise: promise, data: null, error: null });
-
-            // Track if this effect is still current (race condition handling)
-            let isCancelled = false;
-
-            // Handling promise result, storing data when api success or catch the error if unsuccessful 
-            promise.then((data) => {
+        promise
+            .then(data => {
                 if (!isCancelled) {
-                    setPromiseState({ promise: promise, data: data, error: null });
+                    setPromiseState({ promise, data, error: null });
                 }
-            }).catch((error) => {
+            })
+            .catch(error => {
                 if (!isCancelled) {
-                    setPromiseState({ promise: promise, data: null, error: error });
+                    setPromiseState({ promise, data: null, error });
                 }
             });
 
-            // Cleanup function for race conditions
-            return () => {
-                isCancelled = true;
-            };
-        }, [currentDishId]);  // Dependency array so re-run when current dish id changes 
+        return () => { isCancelled = true; };
+    }, [model.currentDishId]);
 
-
-        // Event handler for Add to Menu
-        function handleAddToMenuACB() {
-            if (promiseState.data) {
-                props.model.addToMenu(promiseState.data);
-            }
-        }
-
-        // if promise is resolved, show DetailsView
+    function handleAddToMenu() {
         if (promiseState.data) {
-            const isDishInMenu = props.model.dishes.find(function findDishByIdCB(dish) {
-                return props.model.currentDishId === dish.id;
-            });
-
-            // rendered only if current dish promise state data is truthy
-            return <DetailsView dishData={promiseState.data}
-                guests={guests}
-                isDishInMenu={Boolean(isDishInMenu)}
-                onAddToMenu={handleAddToMenuACB}
-            />;
+            model.addToMenu(promiseState.data);
         }
-
-        // otherwise (pending, error, no data, data not yet resolved, no promise) return suspenseView 
-        return <SuspenseView promise={promiseState.promise} 
-                             error={promiseState.error}
-        />;
     }
-);
 
-export { Details };
+    if (promiseState.data) {
+        const isDishInMenu = model.dishes.some(
+            dish => dish.id === model.currentDishId
+        );
+
+        return (
+            <DetailsView
+                dishData={promiseState.data}
+                guests={model.numberOfGuests}
+                isDishInMenu={isDishInMenu}
+                onAddToMenu={handleAddToMenu}
+            />
+        );
+    }
+
+    return (
+        <SuspenseView
+            promise={promiseState.promise}
+            error={promiseState.error}
+        />
+    );
+});
