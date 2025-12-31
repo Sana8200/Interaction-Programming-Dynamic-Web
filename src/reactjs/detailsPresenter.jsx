@@ -2,7 +2,7 @@ import { DetailsView } from "../views/detailsView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
 import { observer } from "mobx-react-lite";
 import { useState, useEffect } from "react";
-import { getDishDetails } from "/src/model/dishSource.js";
+import { getDishDetails } from "/src/dishSource.js";
 
 // Details presenter decides whta to render whether DetailsView or SuspenseView
 const Details = observer(
@@ -10,6 +10,7 @@ const Details = observer(
 
         const guests = props.model.numberOfGuests;
 
+        // local state to track the promise, data, and error
         const [promiseState, setPromiseState] = useState({ promise: null, data: null, error: null });
         const currentDishId = props.model.currentDishId;
 
@@ -74,6 +75,5 @@ const Details = observer(
         />;
     }
 );
-
 
 export { Details };
