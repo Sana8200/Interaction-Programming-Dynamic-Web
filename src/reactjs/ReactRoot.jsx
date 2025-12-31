@@ -1,12 +1,16 @@
-import { Summary } from "./summaryPresenter.jsx";    // for rendering the SummaryView
-import { Sidebar } from "./sidebarPresenter.jsx";    // for rendering the SidebarView
-import { Search } from "./searchPresenter.jsx";    // for rendering the SearchView
-import { Details } from "./detailsPresenter.jsx";    // for rendering the DetailsView
-import { SuspenseView } from "../views/suspenseView.jsx";  // for rendering the SuspenseView
+import { Sidebar } from "./sidebarPresenter.jsx";
+import { Search } from "./searchPresenter.jsx";
+import { Details } from "./detailsPresenter.jsx";
+import { SuspenseView } from "../views/suspenseView.jsx";
+import { LoginPresenter } from "./loginPresenter.jsx";
+import { SignupPresenter } from "./signupPresenter.jsx";
+import { Summary } from "./summaryPresenter.jsx";
+import { UserBar } from "./userPresenter.jsx";
+
 import { observer } from "mobx-react-lite";
 import { createHashRouter, RouterProvider } from "react-router-dom";
-import "/src/style/style.css";
-
+import { useState } from "react";
+import "/src/style.css";
 
 
 function makeRouter(model) {
@@ -30,24 +34,59 @@ function makeRouter(model) {
     ])
 }
 
-
 const ReactRoot = observer(
     function ReactRoot(props) {
-        // rendering suspenseView if the model is not ready 
-        if (!props.model.ready) {
+
+       // just using state for switching between login/signpu, no router 
+        const [authPage, setAuthPage] = useState("login");
+
+        //  Checking auth state (initial loading)
+        if (!props.model.ready && !props.model.user) {
             return (
                 <div className="flexParent">
                     <div className="mainContent">
-                        <SuspenseView promise={true} /> {/* Dummy promise for loading state */}
+                        <SuspenseView promise={true} />
                     </div>
                 </div>
             );
         }
 
-        // rendering the main part. sidebar goes to a different div, rest goes in mainContent
+        // rendering Not logged in routes, show login/signup
+        if (!props.model.user) {
+            return (
+                <div className="flexParent">
+                    <div className="mainContent auth-main">
+                        {authPage === "login" ? (
+                            <LoginPresenter 
+                                model={props.model} 
+                                onSwitchToSignup={() => setAuthPage("signup")}
+                            />
+                        ) : (
+                            <SignupPresenter 
+                                model={props.model} 
+                                onSwitchToLogin={() => setAuthPage("login")}
+                            />
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // Logged in but loading data
+        if (!props.model.ready) {
+            return (
+                <div className="flexParent">
+                    <div className="mainContent">
+                        <SuspenseView promise={true} />
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="flexParent">
                 <div className="sidebar">
+                    <UserBar model={props.model} />
                     <Sidebar model={props.model} />
                 </div>
                 <div className="mainContent">
@@ -58,4 +97,4 @@ const ReactRoot = observer(
     }
 );
 
-export { ReactRoot }
+export { ReactRoot };
