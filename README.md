@@ -78,7 +78,7 @@ A responsive web application for browsing recipes, planning dinner menus, and ge
 
 7. **Deploy to Firebase**
    ```bash
-   firebase deploy --only hosting
+   firebase deploy
    ```
 
 ---
@@ -107,8 +107,9 @@ src/
 │   ├── signupPresenter.jsx   # Signup logic
 │   ├── summaryPresenter.jsx  # Shopping list logic
 │   └── userPresenter.jsx     # User bar logic
-├── style/
-│   └── style.css             # Application styles
+├── style/           
+│   ├── style.css             # Application styles
+│   └── dinner_table.jpg     
 ├── views/
 │   ├── detailsView.jsx       # Dish details UI
 │   ├── loginView.jsx         # Login form UI
