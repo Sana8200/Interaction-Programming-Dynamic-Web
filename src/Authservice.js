@@ -5,7 +5,7 @@ import {
     signOut,
     onAuthStateChanged
 } from "firebase/auth";
-import { auth } from "/src/firebaseConfig.js";
+import { auth } from "/src/config/firebaseConfig.js";
 
 // login, takes email and password and tries to log in the user 
 export async function loginWithEmail(email, password) {
