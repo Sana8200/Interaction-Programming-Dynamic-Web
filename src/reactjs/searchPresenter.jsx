@@ -15,10 +15,15 @@ export const Search = observer(function Search(props) {
     const [searchType, setSearchType] = useState("");
     const debounceTimer = useRef(null);
 
-    // Debounced search
+    // Debounced search - only triggers when there's actual input
     useEffect(() => {
         if (debounceTimer.current) {
             clearTimeout(debounceTimer.current);
+        }
+
+        // Only auto-search if user has entered text or selected a type
+        if (!searchText && !searchType) {
+            return; // Don't search on empty - keep welcome screen
         }
 
         debounceTimer.current = setTimeout(() => {
@@ -32,6 +37,7 @@ export const Search = observer(function Search(props) {
         };
     }, [searchText, searchType, model]);
 
+    // Manual search (button click) - works even with empty query
     function handleSearch() {
         if (debounceTimer.current) {
             clearTimeout(debounceTimer.current);
