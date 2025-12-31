@@ -1,5 +1,5 @@
 /**
- * Example dishes for testing - DO NOT use in production code!
+ * Example dishes for testing - NOT use in production code!
  * Amount: base amount of a single ingredient for one serving
  */
 export const dishesConst = [
