@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { signupWithEmail } from "/src/AuthService.js";  
+import { signupWithEmail } from "/src/Authservice.js";  
 import { SignupView } from "../views/signupView.jsx";
 
 export const SignupPresenter = observer(

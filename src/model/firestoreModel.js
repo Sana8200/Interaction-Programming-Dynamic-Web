@@ -1,6 +1,6 @@
 import { doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "/src/config/firebaseConfig.js";
-import { onAuthChange } from "/src/AuthService.js";
+import { onAuthChange } from "/src/Authservice.js";
 
 // Expose key functions to the window for easy testing/debugging
 window.db = db;

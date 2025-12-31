@@ -1,6 +1,6 @@
 // User info and logout button
 import { observer } from "mobx-react-lite";
-import { logout } from "/src/AuthService.js";  
+import { logout } from "/src/Authservice.js";  
 import { UserBarView } from "/src/views/userView.jsx";
 
 export const UserBar = observer(
