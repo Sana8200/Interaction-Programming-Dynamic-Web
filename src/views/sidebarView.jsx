@@ -2,7 +2,7 @@ import { dishType, menuPrice, sortDishes } from "/src/utilities.js";
 import "/src/style/style.css";
 
 export function SidebarView(props) {
-    
+
     // Event handler for - button 
     function handleMinusACB() {
         console.log("Decreasing the number of guests:", props.number - 1);
@@ -18,8 +18,9 @@ export function SidebarView(props) {
     return (
         <div className="sidebar-box">
             {/* minus button disables when the number is excatly equals to 1 */}
-            <button disabled={props.number === 1} onClick={handleMinusACB}> - </button> 
-            {props.number}
+            <button disabled={props.number === 1} onClick={handleMinusACB}> 
+                - </button>
+              {props.number}
             <button onClick={handlePlusACB}> + </button>
 
             {/* Dish table */}
@@ -34,7 +35,7 @@ export function SidebarView(props) {
                         <td></td>
                         <td className="align-right">
                             {/* Total price, scaled by guest count */}
-                            {(menuPrice(props.dishes) * props.number).toFixed(2)} SEK
+                            {(menuPrice(props.dishes) * props.number).toFixed(2)}
                         </td>
                     </tr>
                 </tbody>
@@ -66,7 +67,7 @@ export function SidebarView(props) {
                     </button>
                 </td>
                 <td>
-                    {/* dish name as a hyperlink using # as href, hyperlink destination for single page application */}
+                    {/* fire a custom event, the parameter is dish as object */}
                     <a href="#/details" onClick={handleDishLinkACB}>
                         {dish.title}
                     </a>
@@ -76,7 +77,7 @@ export function SidebarView(props) {
                 </td>
                 <td className="align-right">
                     {/* Price per dish, scaled by guest count */}
-                    {(dish.pricePerServing * props.number).toFixed(2)} SEK
+                    {(dish.pricePerServing * props.number).toFixed(2)}
                 </td>
             </tr>
         );

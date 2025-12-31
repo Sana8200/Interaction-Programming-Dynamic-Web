@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import "/src/style.css";
+import "/src/style/style.css";
 
 export function SignupView(props) {
     const [showPassword, setShowPassword] = useState(false);

@@ -1,4 +1,4 @@
-import "/src/style.css";
+import "/src/style/style.css";
 
 export function UserBarView(props) {
     const initial = props.user.email ? props.user.email.charAt(0).toUpperCase() : "?";

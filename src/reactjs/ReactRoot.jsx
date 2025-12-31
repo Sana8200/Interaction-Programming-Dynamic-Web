@@ -10,7 +10,7 @@ import { UserBar } from "./userPresenter.jsx";
 import { observer } from "mobx-react-lite";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { useState } from "react";
-import "/src/style.css";
+import "/src/style/style.css";
 
 
 function makeRouter(model) {
