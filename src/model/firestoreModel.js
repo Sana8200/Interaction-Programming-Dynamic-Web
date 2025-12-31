@@ -4,15 +4,9 @@
  */
 import { doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../config/firebaseConfig.js";
-import { onAuthChange } from "/src/Authservice.js";
+import { onAuthChange } from "../Authservice.js";
 
 const COLLECTION = "dinnerModel";
-
-// Expose key functions to the window for easy testing/debugging
-window.db = db;
-window.doc = doc;
-window.setDoc = setDoc;
-window.onSnapshot = onSnapshot;
 
 /**
  * Connect model to Firestore persistence
@@ -22,6 +16,7 @@ window.onSnapshot = onSnapshot;
 export function connectToPersistence(model, watchFunction) {
     let unsubscribeSnapshot = null;
     let unsubscribeReaction = null;
+    let isFirstLoad = true;
 
     onAuthChange((user) => {
         // Cleanup previous listeners
@@ -34,84 +29,85 @@ export function connectToPersistence(model, watchFunction) {
             unsubscribeReaction = null;
         }
 
+        isFirstLoad = true;
+
         if (user) {
-            handleUserLogin(user, model, watchFunction);
+            handleUserLogin(user);
         } else {
-            handleUserLogout(model);
+            handleUserLogout();
         }
     });
 
-    function handleUserLogin(user, model, watchFunction) {
+    function handleUserLogin(user) {
         model.setUser(user);
         model.setReady(false);
 
         const userDoc = doc(db, COLLECTION, user.uid);
 
-        // First: Load data from Firestore
+        // Set up real-time listener
         unsubscribeSnapshot = onSnapshot(
             userDoc,
             (snapshot) => {
-                const data = snapshot.data();
-                
-                if (data) {
-                    // Load existing data
-                    model.numberOfGuests = data.numberOfGuests ?? 2;
-                    model.dishes = data.dishes ?? [];
-                    model.currentDishId = data.currentDishId ?? null;
-                } else {
-                    // New user - initialize with defaults and save
-                    model.numberOfGuests = 2;
-                    model.dishes = [];
-                    model.currentDishId = null;
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
                     
+                    // Only update model on first load to avoid loops
+                    if (isFirstLoad) {
+                        model.numberOfGuests = data.numberOfGuests ?? 2;
+                        model.dishes = data.dishes ?? [];
+                        model.currentDishId = data.currentDishId ?? null;
+                    }
+                } else {
                     // Create initial document for new user
                     setDoc(userDoc, {
                         numberOfGuests: 2,
                         dishes: [],
                         currentDishId: null
-                    }).catch(err => console.error("Failed to create initial doc:", err));
+                    }).catch(err => console.error("Failed to create initial document:", err));
+                    
+                    model.numberOfGuests = 2;
+                    model.dishes = [];
+                    model.currentDishId = null;
                 }
 
-                // Mark as ready AFTER loading data
-                if (!model.ready) {
+                // Set ready and setup reaction after first load
+                if (isFirstLoad) {
+                    isFirstLoad = false;
                     model.setReady(true);
-                    
-                    // Setup save reaction AFTER first load completes
-                    setupSaveReaction();
+                    setupSaveReaction(userDoc);
                 }
             },
             (error) => {
                 console.error("Firestore listener error:", error);
-                model.setReady(true); // Allow UI to work even if persistence fails
+                model.setReady(true);
             }
         );
-
-        function setupSaveReaction() {
-            // Watch for changes and save to Firestore
-            unsubscribeReaction = watchFunction(
-                // What to watch
-                () => [model.numberOfGuests, model.dishes, model.currentDishId],
-                // What to do when it changes
-                () => {
-                    if (!model.ready) return;
-                    
-                    const dataToSave = {
-                        numberOfGuests: model.numberOfGuests,
-                        dishes: model.dishes,
-                        currentDishId: model.currentDishId
-                    };
-
-                    setDoc(userDoc, dataToSave, { merge: true })
-                        .then(() => console.log("Data saved to Firestore"))
-                        .catch((err) => console.error("Save failed:", err));
-                },
-                // Options: don't fire immediately (we just loaded)
-                { fireImmediately: false }
-            );
-        }
     }
 
-    function handleUserLogout(model) {
+    function setupSaveReaction(userDoc) {
+        unsubscribeReaction = watchFunction(
+            // What to watch
+            () => [
+                model.numberOfGuests,
+                model.dishes.length,
+                JSON.stringify(model.dishes),
+                model.currentDishId
+            ],
+            // What to do when it changes
+            () => {
+                if (!model.ready) return;
+
+                setDoc(userDoc, {
+                    numberOfGuests: model.numberOfGuests,
+                    dishes: model.dishes,
+                    currentDishId: model.currentDishId
+                }, { merge: true }).catch(err => console.error("Save failed:", err));
+            },
+            { fireImmediately: false }
+        );
+    }
+
+    function handleUserLogout() {
         model.setUser(null);
         model.resetToDefaults();
         model.setReady(true);
