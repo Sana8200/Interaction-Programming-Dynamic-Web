@@ -1,63 +1,57 @@
-import { PROXY_KEY, PROXY_URL } from "/src/config/apiConfig.js";
+/**
+ * Dish Source
+ * API calls to Spoonacular via proxy
+ */
+import { PROXY_KEY, PROXY_URL } from "../config/apiConfig.js";
 
-// Callback to handle HTTP response and parse JSON.
-function gotResponseACB(response) {
-    // Throw an error if HTTP status is not successful (200-299 range)
+const API_OPTIONS = {
+    headers: {
+        "X-DH2642-Key": PROXY_KEY,
+        "X-DH2642-Group": "795",
+    }
+};
+
+/**
+ * Handle HTTP response
+ */
+function handleResponse(response) {
     if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`);
     }
     return response.json();
 }
 
-// Callback to extract the relevant array of dishes from the API response object.
-function keepJustDishesACB(response) {
-    return response.results;
-}
-
-// Fetches dishes from the Spoonacular API based on search parameters.
+/**
+ * Search dishes by query and type
+ * @param {object} searchParams - { query, type }
+ * @returns {Promise<Array>} Array of dish results
+ */
 export function searchDishes(searchParams) {
-
-    // Convert search parameters object to a URL query string
     const queryString = new URLSearchParams(searchParams).toString();
+    const url = `${PROXY_URL}/recipes/complexSearch?${queryString}`;
 
-    // Construct the full URL for complex search
-    const sourceURL = PROXY_URL + "/recipes/complexSearch" + "?" + queryString;
-
-    // Define mandatory headers for the fetch call
-    const options = {
-        headers: {
-            "X-DH2642-Key": PROXY_KEY,
-            "X-DH2642-Group": "795",
-        }
-    };
-
-    // Chain promises: fetch -> check response -> parse JSON -> extract results array
-    return fetch(sourceURL, options).then(gotResponseACB).then(keepJustDishesACB);
+    return fetch(url, API_OPTIONS)
+        .then(handleResponse)
+        .then(response => response.results);
 }
 
-// Fetches bulk details for an array of dish IDs.
-export function getMenuDetails(ids_array) {
-    // Create query parameter from the array of IDs
-    const searchParams = { ids: ids_array.join(',') };
-    const queryString = new URLSearchParams(searchParams).toString();
-    const sourceURL = PROXY_URL + "/recipes/informationBulk" + "?" + queryString;
+/**
+ * Get detailed info for multiple dishes
+ * @param {Array<number>} ids - Array of dish IDs
+ * @returns {Promise<Array>} Array of detailed dish objects
+ */
+export function getMenuDetails(ids) {
+    const queryString = new URLSearchParams({ ids: ids.join(',') }).toString();
+    const url = `${PROXY_URL}/recipes/informationBulk?${queryString}`;
 
-    const options = {
-        headers: {
-            "X-DH2642-Key": PROXY_KEY,
-            "X-DH2642-Group": "795",
-        }
-    };
-
-    // Fetches the array of detailed dish objects
-    return fetch(sourceURL, options).then(gotResponseACB);
+    return fetch(url, API_OPTIONS).then(handleResponse);
 }
 
-// Fetches full details for a single dish ID.
+/**
+ * Get detailed info for a single dish
+ * @param {number} id - Dish ID
+ * @returns {Promise<object>} Detailed dish object
+ */
 export function getDishDetails(id) {
-    // Callback to return the single dish object (the first element of the bulk response array)
-    function arrayToObjectACB(dishArray) {
-        return dishArray[0];
-    }
-    return getMenuDetails([id]).then(arrayToObjectACB);
+    return getMenuDetails([id]).then(dishes => dishes[0]);
 }
