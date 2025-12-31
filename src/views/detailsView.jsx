@@ -30,8 +30,8 @@ export function DetailsView(props) {
             {/* Ingredients */}
             <div className="ingredients-details bordered-box">
                 <h3>Ingredients</h3>
-                {dish.extendedIngredients.map(ingredient => (
-                    <div key={ingredient.id} className="ingredient">
+                {dish.extendedIngredients.map((ingredient, index) => (
+                    <div key={`${ingredient.id}-${index}`} className="ingredient">
                         <span>{ingredient.name}</span>
                         <span>{ingredient.amount}</span>
                         <span>{ingredient.unit}</span>
