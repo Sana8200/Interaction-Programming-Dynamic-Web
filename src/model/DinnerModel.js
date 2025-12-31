@@ -3,49 +3,59 @@
    It is an abstract object, i.e. it knows nothing about graphics and interaction.
 */
 import { resolvePromise } from "./resolvePromise.js";
-import { searchDishes } from "./dishSource.js";      
+import { searchDishes } from "./dishSource.js";
 
-
-export const model = {  
+export const model = {
     numberOfGuests: 2,
     dishes: [],
     currentDishId: null,  // null means "intentionally empty"
-    searchResultsPromiseState:{},
-    currentDishPromiseState: {},     // Stores details of the currently selected dish
+    searchResultsPromiseState: {},
+    user: null,     // The logged-in user object (null = not logged in)
+    ready: false,   // Is data loaded from Firebase?
 
-
-    setCurrentDishId(dishId){
-        this.currentDishId= dishId;     // Set the model current dish ID
+    // Called by firestoreModel when user logs in or out
+    setUser(user){
+        this.user = user;
     },
-    
-    setNumberOfGuests(number){     
-        if (!Number.isInteger(number) || number < 1){         // Only accepts integers larger than zero
-            throw new Error ("number of guests not a positive integer");
+
+    setCurrentDishId(dishId) {
+        this.currentDishId = dishId;     // Set the ID of the currently selected dish
+    },
+
+    setNumberOfGuests(number) {
+        // Only accept positive integers
+        if (!Number.isInteger(number) || number < 1) {
+            throw new Error("number of guests not a positive integer");
         }
-        this.numberOfGuests = number;    // Set the number of guests 
-    },
-    
-    addToMenu(dishToAdd){
-        // array spread syntax exercise
-        // It sets this.dishes to a new array [   ] where we spread (...) the elements of the existing this.dishes
-        this.dishes= [...this.dishes, dishToAdd];   // Creates a new array, putting all the old dishes back in and add dishToAdd at the end 
+        this.numberOfGuests = number;    // Update guest count
     },
 
-    // filter callback exercise
-    removeFromMenu(dishToRemove){
-        function shouldWeKeepDishCB(dish){
-            // We will not keep the dish that has the same id as dishToRemove if any
-            return dish.id !== dishToRemove.id;   // returns true for every dish except the one to remove 
-        }
-        this.dishes= this.dishes.filter(shouldWeKeepDishCB);   // filter creates a new array, keeping only the dishes which returned true
+    addToMenu(dishToAdd) {
+        // Creates a new array with the new dish appended
+        this.dishes = [...this.dishes, dishToAdd];
     },
-    
-    // Takes an object as a parameter, invokes a promise and stores data
-    doSearch(params){
+
+
+    removeFromMenu(dishToRemove) {
+        function shouldWeKeepDishCB(dish) {
+            // Keep the dish if its ID does not match the one to remove
+            return dish.id !== dishToRemove.id;
+        }
+        // Filter creates a new array excluding the dish to remove
+        this.dishes = this.dishes.filter(shouldWeKeepDishCB);
+    },
+
+    // Executes a search based on current parameters and stores the promise state
+    doSearch(params) {
         const searchPromise = searchDishes(params);
-        resolvePromise(searchPromise, this.searchResultsPromiseState);   
+        resolvePromise(searchPromise, this.searchResultsPromiseState);
+    },
+
+    // Called on logout - resets and clear all user data
+    resetToDefaults() {
+        this.numberOfGuests = 2;
+        this.dishes = [];
+        this.currentDishId = null;
+        this.ready = false;
     },
 };
-
-
-
