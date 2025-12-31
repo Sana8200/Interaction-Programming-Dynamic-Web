@@ -1,48 +1,43 @@
+import { PROXY_KEY, PROXY_URL } from "./apiConfig";
 
-import { PROXY_KEY, PROXY_URL } from "../api/apiConfig";
-
-
-// gotResponseACB extracts the JSON body from the response, handling the raw HTTP respons. json() also returns a promise
-function gotResponseACB(response){
-    // throwing an error if the HTTP status is not 200, otherwise returning the parsed JSON promise
-    if (!response.ok){
+// Callback to handle HTTP response and parse JSON.
+function gotResponseACB(response) {
+    // Throw an error if HTTP status is not successful (200-299 range)
+    if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`);
     }
     return response.json();
 }
 
-// keepJustDishesACB extracts just the array of dishes from the API response object
-// API returns an object with results property contains teh array of dishes we want, we return only this array 
-function keepJustDishesACB(response){
+// Callback to extract the relevant array of dishes from the API response object.
+function keepJustDishesACB(response) {
     return response.results;
 }
 
+// Fetches dishes from the Spoonacular API based on search parameters.
+export function searchDishes(searchParams) {
 
-// fetches dishes from the dish soruce API based on the given search parameters
-export function searchDishes(searchParams){
-
-    // converting the search parameters object into a query string
+    // Convert search parameters object to a URL query string
     const queryString = new URLSearchParams(searchParams).toString();
 
-    // constructing the final URL : Proxy + API endpoint + query string
+    // Construct the full URL for complex search
     const sourceURL = PROXY_URL + "/recipes/complexSearch" + "?" + queryString;
 
-    // Defining the options (object) for the fetch call with headers 
+    // Define mandatory headers for the fetch call
     const options = {
         headers: {
             "X-DH2642-Key": PROXY_KEY,
-            "X-DH2642-Group": "795", 
+            "X-DH2642-Group": "795",
         }
     };
 
-    // call fetch to make API request. fetch returns a promise, so we chan .then callbacks to process the response
-    return fetch(sourceURL, options).then(gotResponseACB).then(keepJustDishesACB);     
+    // Chain promises: fetch -> check response -> parse JSON -> extract results array
+    return fetch(sourceURL, options).then(gotResponseACB).then(keepJustDishesACB);
 }
 
- 
-
-export function getMenuDetails(ids_array){
-    // object containing the property name and the id array as value 
+// Fetches bulk details for an array of dish IDs.
+export function getMenuDetails(ids_array) {
+    // Create query parameter from the array of IDs
     const searchParams = { ids: ids_array.join(',') };
     const queryString = new URLSearchParams(searchParams).toString();
     const sourceURL = PROXY_URL + "/recipes/informationBulk" + "?" + queryString;
@@ -50,20 +45,19 @@ export function getMenuDetails(ids_array){
     const options = {
         headers: {
             "X-DH2642-Key": PROXY_KEY,
-            "X-DH2642-Group": "795", 
+            "X-DH2642-Group": "795",
         }
     };
 
-    // Result is from API an array of dishes, no need to processing 
+    // Fetches the array of detailed dish objects
     return fetch(sourceURL, options).then(gotResponseACB);
 }
 
-
-
-// Fetches details of a single dish by its ID (first element of the result arrya)
-export function getDishDetails(id){
-    function arrayToObjectACB(dishArray){
+// Fetches full details for a single dish ID.
+export function getDishDetails(id) {
+    // Callback to return the single dish object (the first element of the bulk response array)
+    function arrayToObjectACB(dishArray) {
         return dishArray[0];
-   }
+    }
     return getMenuDetails([id]).then(arrayToObjectACB);
 }
