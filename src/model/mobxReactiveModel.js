@@ -1,22 +1,22 @@
-import "/src/teacherFetch.js"; // protection against fetch() in infinite loops
+/**
+ * MobX Reactive Model
+ * Wraps the plain model with MobX observability
+ */
+import "../teacherFetch.js"; // Protection against infinite fetch loops
 import { reaction, observable, configure } from "mobx";
-import { dishesConst } from "/src/model/dishesConst.js";
-import { model } from "/src/model/DinnerModel.js";    // Import the javascript model 
-import { connectToPersistence } from "./firestoreModel";
-configure({ enforceActions: "never", });  // we don't use Mobx actions in the Lab
+import { model } from "./DinnerModel.js";
+import { connectToPersistence } from "./firestoreModel.js";
 
-// reactive model setup uses observable from mobx to export the model (application state) to the app 
-export const reactiveModel = observable(model);   
+// Disable strict mode - we don't use MobX actions in this lab
+configure({ enforceActions: "never" });
 
-// making the reactive model available at the browser JavasScript Console
-window.myModel= reactiveModel;
-window.dishesConst= dishesConst;
+// Make model reactive
+export const reactiveModel = observable(model);
 
-// Connecting to Persistence. Passing the side effect watcher ensures that our firestoreModel does not depend on your reactive object technology.
+// Connect to Firebase persistence
 connectToPersistence(reactiveModel, reaction);
 
-
-/*
-// Inittial Search 
-myModel.doSearch({});
-*/
+// Debug: expose to browser console
+if (typeof window !== 'undefined') {
+    window.myModel = reactiveModel;
+}

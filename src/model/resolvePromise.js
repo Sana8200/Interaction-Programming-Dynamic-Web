@@ -1,38 +1,35 @@
-// promise state 
-/* Promise only executes only when it's truthy, if promise is null or underfined promise state should still be set 
-   (reset in this case) but promise shouldn't be executed. */
-export function resolvePromise(prms, promiseState){
-     
-    // Setting the promise state to the given promise (prms), and resetting data and error to null
-    promiseState.promise = prms;
+/**
+ * Promise State Resolver
+ * Tracks promise state (pending, resolved, rejected) in an observable object
+ */
+
+/**
+ * Resolve a promise and track its state
+ * @param {Promise|null} promise - The promise to track
+ * @param {object} promiseState - Object to store { promise, data, error }
+ */
+export function resolvePromise(promise, promiseState) {
+    // Reset state
+    promiseState.promise = promise;
     promiseState.data = null;
     promiseState.error = null;
-    
-    // If the promise has not yet been set, we will show no data
-    if(!prms){
-        promiseState.promise = null;
-        promiseState.data = null;
-        promiseState.error = null;
+
+    if (!promise) {
         return;
     }
 
-    // save its parameters into promiseState.data (data and error cannot be both truthy at the same time)
-    function datraACB(data){
-        if(promiseState.promise !== prms){
-            return;
-        }
-        promiseState.data = data;
-        promiseState.error = null;
-    }
-
-    // saving the error into promiseState.error
-    function errorACB(error){
-        if(promiseState.promise !== prms){ 
-            return;
-        }
-        promiseState.error = error;
-        promiseState.data = null;  
-    }
-
-    prms.then(datraACB).catch(errorACB);
+    promise
+        .then((data) => {
+            // Only update if this is still the current promise (prevents race conditions)
+            if (promiseState.promise === promise) {
+                promiseState.data = data;
+                promiseState.error = null;
+            }
+        })
+        .catch((error) => {
+            if (promiseState.promise === promise) {
+                promiseState.error = error;
+                promiseState.data = null;
+            }
+        });
 }

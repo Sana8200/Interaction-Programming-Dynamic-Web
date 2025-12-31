@@ -4,7 +4,7 @@
  */
 import { doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../config/firebaseConfig.js";
-import { onAuthChange } from "../AuthService.js";
+import { onAuthChange } from "/src/Authservice.js";
 
 const COLLECTION = "dinnerModel";
 
